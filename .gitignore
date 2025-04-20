@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+
+# Archivos de sistema macOS
+.DS_Store
+
+# Archivos Python
+__pycache__/
+*.pyc
+
+# Dependencias (si usas pipenv)
+Pipfile
+Pipfile.lock
+
+# Archivos generados
+*.pdf
+*.log
+
+# Credenciales
+.env
+.env.local
