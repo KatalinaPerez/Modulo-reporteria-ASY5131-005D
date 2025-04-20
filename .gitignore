@@ -19,3 +19,7 @@ Pipfile.lock
 # Credenciales
 .env
 .env.local
+
+#PDFs de ejemplo
+
+src/pdf_generados/*pdf
