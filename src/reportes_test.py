@@ -33,7 +33,7 @@ datos_ventas = [
     {"producto": "Sombrero", "cantidad": 30, "total": 600},
 ]
 
-def upload_s3(file_path, BUCKET_NAME, s3_key):
+def upload_s3(file_path, BUCKET_NAME, S3_KEY_PREFIX):
     """Sube un archivo a un bucket de S3.
 
     Args:
@@ -47,8 +47,8 @@ def upload_s3(file_path, BUCKET_NAME, s3_key):
     try:
         s3_client = boto3.client('s3', region_name=REGION_NAME)
         with open(file_path, "rb") as f: #abrimos el archivo en elctura binaria (rb), necesario para conectar S3
-            s3_client.upload_fileobj(f, BUCKET_NAME, s3_key)
-        print(f"✅ Archivo subido exitosamente a 's3://{BUCKET_NAME}/{s3_key}'")
+            s3_client.upload_fileobj(f, BUCKET_NAME, S3_KEY_PREFIX)
+        print(f"✅ Archivo subido exitosamente a 's3://{BUCKET_NAME}/{S3_KEY_PREFIX}'")
         return True
     except Exception as e:
         print(f"❌ Ocurrió un error al subir el archivo a S3: {e}")
