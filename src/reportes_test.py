@@ -1,7 +1,10 @@
 from fpdf import FPDF
 from datetime import datetime
 import os
+from models import Reporte
+from services import obtener_reporte
 
+#Define donde se debe guardar el pdf y si no hay carpeta crea una 
 ruta_pdf = os.path.join(os.path.dirname(__file__), "pdf_generados")
 
 if not os.path.exists(ruta_pdf):
@@ -26,6 +29,12 @@ datos_ventas = [
     {"producto": "Sombrero", "cantidad": 30, "total": 600},
 ]
 
+datos_ventas2 = [
+    {"producto": "Sacos", "cantidad": 42, "total": 79000},
+    {"producto": "Faroles", "cantidad": 62, "total": 48500},
+    {"producto": "Rejas", "cantidad": 80, "total": 60000},
+]
+
 # Se crea el pdf
 pdf = PDF()
 pdf.add_page()
@@ -35,7 +44,7 @@ pdf.set_font("Arial", "B", 14)
 pdf.cell(0, 10, "Reporte Mensual - Abril 2025", 0, 1, "C")
 pdf.ln(10)
 
-# Tabla de ventas
+# Tabla de productos, despues se remplaza con datos de la BD
 pdf.set_font("Arial", "B", 10)
 pdf.cell(60, 10, "Producto", 1, 0, "C")
 pdf.cell(40, 10, "Cantidad", 1, 0, "C")
@@ -52,7 +61,8 @@ pdf.ln(10)
 pdf.set_font("Arial", "B", 12)
 pdf.cell(0, 10, f"Total General: ${sum(v['total'] for v in datos_ventas)}", 0, 1, "R")
 
-# Guardar archivo
+
+#Guarda el pdf en la carpeta definida
 nombre_archivo = os.path.join(ruta_pdf, "reporte_ventas.pdf")
 pdf.output(nombre_archivo)
-print(f"✅ Reporte generado: {nombre_archivo}")
+print(f"Reporte generado con exito: {nombre_archivo}")
