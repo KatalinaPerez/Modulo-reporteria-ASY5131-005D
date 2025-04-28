@@ -1,0 +1,54 @@
+.sec-car {
+    background-color: #1758c070;
+    width: 500px;
+    height: 200px;
+    
+}
+
+p {
+    color:black;
+    padding: 30px 0 35px 30px;
+    font-size: 50px;
+    background-color: #949fb470;
+    text-align: start;
+}
+
+.sec-btn {
+    background-color: #4a4f5770;
+    padding: 250px 0 100px 100px;
+}
+
+.btn {
+    color: black;
+    padding: 10px;
+    border-radius: 30px;
+    border-color: black;
+    background-color: burlywood;
+    height: 60px;
+    width: 200px;
+    margin: 10px;
+}
+
+.Descarga {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 10px;
+}
+
+.Genera {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 10px;
+}
+
+.Elimina {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 10px;
+}
+
+body {
+    /*background-image: url(./img/internet-3116062_1280.webp);*/
+    
+}
+  
