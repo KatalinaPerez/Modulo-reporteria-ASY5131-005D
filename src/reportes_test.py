@@ -1,20 +1,28 @@
 from fpdf import FPDF
 from datetime import datetime
 import os
-import boto3 #esto es para coenctar con S3
+import boto3
+from dotenv import load_dotenv  
+# Cargar las variables del archivo .env
+load_dotenv()
 
-#Variables para S3
-BUCKET_NAME = 'modreporteria'  # Reemplaza con el nombre de tu bucket de S3
+# Variables de configuración
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')  # Opcional
+REGION_NAME = os.getenv('AWS_REGION', 'us-east-1')  # Valor por defecto: 'us-east-1'
+BUCKET_NAME = os.getenv('BUCKET_NAME', 'modreporteria')  # Valor por defecto: 'modreporteria'
+
+# Configuración de S3
 fecha_actual = datetime.now().strftime("%Y-%m-%d")
-S3_KEY_PREFIX = f'reportes/{fecha_actual}'  # Prefijo opcional para organizar tus archivos en S3
-REGION_NAME = 'us-east-1' # Reemplaza con la región de tu bucket (ej: 'us-east-1')
+S3_KEY_PREFIX = f'reportes/{fecha_actual}/'  # Asegúrate de incluir la barra al final
 
+# Crear carpeta local si no existe
 ruta_pdf = os.path.join(os.path.dirname(__file__), "pdf_generados")
-
 if not os.path.exists(ruta_pdf):
     os.makedirs(ruta_pdf)
 
-# Se configura el PDF (Titulo, fuente, tamaño, etc..)
+# Clase para generar el PDF
 class PDF(FPDF):
     def header(self):
         self.set_font("Arial", "B", 12)
@@ -26,35 +34,32 @@ class PDF(FPDF):
         self.set_font("Arial", "I", 8)
         self.cell(0, 10, f"Página {self.page_no()}", 0, 0, "C")
 
-#Datos de ejemplo, despues se tienen que traer desde la base de datos 
+# Datos de ejemplo
 datos_ventas = [
     {"producto": "Camiseta", "cantidad": 150, "total": 1500},
     {"producto": "Zapatos", "cantidad": 45, "total": 2250},
     {"producto": "Sombrero", "cantidad": 30, "total": 600},
 ]
 
-def upload_s3(file_path, BUCKET_NAME, S3_KEY_PREFIX):
-    """Sube un archivo a un bucket de S3.
-
-    Args:
-        file_path (str): La ruta local del archivo a subir.
-        bucket_name (str): El nombre del bucket de S3.
-        s3_key (str): El nombre con el que se guardará el archivo en S3.
-
-    Returns:
-        bool: True si la subida fue exitosa, False en caso contrario.
-    """
+# Función para subir archivos a S3
+def upload_s3(file_path, bucket_name, s3_key):
     try:
-        s3_client = boto3.client('s3', region_name=REGION_NAME)
-        with open(file_path, "rb") as f: #abrimos el archivo en elctura binaria (rb), necesario para conectar S3
-            s3_client.upload_fileobj(f, BUCKET_NAME, S3_KEY_PREFIX)
-        print(f"✅ Archivo subido exitosamente a 's3://{BUCKET_NAME}/{S3_KEY_PREFIX}'")
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            aws_session_token=AWS_SESSION_TOKEN,
+            region_name=REGION_NAME
+        )
+        with open(file_path, "rb") as f:
+            s3_client.upload_fileobj(f, bucket_name, s3_key)
+        print(f"✅ Archivo subido exitosamente a 's3://{bucket_name}/{s3_key}'")
         return True
     except Exception as e:
         print(f"❌ Ocurrió un error al subir el archivo a S3: {e}")
         return False
 
-# Se crea el pdf
+# Crear el PDF
 pdf = PDF()
 pdf.add_page()
 
