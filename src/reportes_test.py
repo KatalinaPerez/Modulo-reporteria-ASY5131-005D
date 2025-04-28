@@ -2,7 +2,7 @@ from fpdf import FPDF
 from datetime import datetime
 import os
 from models import Reporte
-from services import obtener_reporte
+
 
 #Define donde se debe guardar el pdf y si no hay carpeta crea una 
 ruta_pdf = os.path.join(os.path.dirname(__file__), "pdf_generados")
