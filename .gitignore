@@ -22,4 +22,4 @@ Pipfile.lock
 
 #PDFs de ejemplo
 
-src/pdf_generados/*pdf
+src/pdf_generados/*.pdf
