@@ -14,7 +14,9 @@ def upload_s3(file_bytes,bucket_name, s3_key):
     try:
         s3=get_s3()
         s3.put_object(Bucket=bucket_name, Key=s3_key, Body=file_bytes)
+
         print(f"✅ Archivo subido exitosamente a s3://{bucket_name}/{s3_key}")
+
         return True
     except Exception as e:
         print(f"❌ Error al subir archivo a S3: {e}")
