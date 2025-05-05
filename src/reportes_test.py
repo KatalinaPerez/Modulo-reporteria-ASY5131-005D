@@ -1,7 +1,14 @@
 from fpdf import FPDF
 from datetime import datetime
 import os
-from models import Reporte
+import boto3 #esto es para coenctar con S3
+
+#Variables para S3
+BUCKET_NAME = 'modreporteria'  # Reemplaza con el nombre de tu bucket de S3
+fecha_actual = datetime.now().strftime("%Y-%m-%d")
+S3_KEY_PREFIX = f'reportes/{fecha_actual}'  # Prefijo opcional para organizar tus archivos en S3
+REGION_NAME = 'us-east-1' # Reemplaza con la región de tu bucket (ej: 'us-east-1')
+
 
 
 #Define donde se debe guardar el pdf y si no hay carpeta crea una 
@@ -29,11 +36,27 @@ datos_ventas = [
     {"producto": "Sombrero", "cantidad": 30, "total": 600},
 ]
 
-datos_ventas2 = [
-    {"producto": "Sacos", "cantidad": 42, "total": 79000},
-    {"producto": "Faroles", "cantidad": 62, "total": 48500},
-    {"producto": "Rejas", "cantidad": 80, "total": 60000},
-]
+def upload_s3(file_path, BUCKET_NAME, S3_KEY_PREFIX):
+    """Sube un archivo a un bucket de S3.
+
+    Args:
+        file_path (str): La ruta local del archivo a subir.
+        bucket_name (str): El nombre del bucket de S3.
+        s3_key (str): El nombre con el que se guardará el archivo en S3.
+
+    Returns:
+        bool: True si la subida fue exitosa, False en caso contrario.
+    """
+    try:
+        s3_client = boto3.client('s3', region_name=REGION_NAME)
+        with open(file_path, "rb") as f: #abrimos el archivo en elctura binaria (rb), necesario para conectar S3
+            s3_client.upload_fileobj(f, BUCKET_NAME, S3_KEY_PREFIX)
+        print(f"✅ Archivo subido exitosamente a 's3://{BUCKET_NAME}/{S3_KEY_PREFIX}'")
+        return True
+    except Exception as e:
+        print(f"❌ Ocurrió un error al subir el archivo a S3: {e}")
+        return False
+
 
 # Se crea el pdf
 pdf = PDF()
@@ -62,7 +85,12 @@ pdf.set_font("Arial", "B", 12)
 pdf.cell(0, 10, f"Total General: ${sum(v['total'] for v in datos_ventas)}", 0, 1, "R")
 
 
-#Guarda el pdf en la carpeta definida
-nombre_archivo = os.path.join(ruta_pdf, "reporte_ventas.pdf")
-pdf.output(nombre_archivo)
-print(f"Reporte generado con exito: {nombre_archivo}")
+# Guardar archivo localmente
+nombre_base_archivo = "reporte_ventas.pdf"
+nombre_archivo_local = os.path.join(ruta_pdf, nombre_base_archivo)
+pdf.output(nombre_archivo_local)
+print(f"✅ Reporte generado localmente: {nombre_archivo_local}")
+
+# Subir el archivo a S3
+s3_key = f"{S3_KEY_PREFIX}{nombre_base_archivo}"
+upload_s3(nombre_archivo_local, BUCKET_NAME, s3_key)
