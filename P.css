@@ -1,0 +1,214 @@
+body {
+    font-family: sans-serif;
+    background-color: #18181b;
+    color: #e2e2e2;
+    display: flex; /* Usamos flex para la disposición horizontal de la barra lateral y el contenido */
+    margin: 0;
+    min-height: 100vh; /* Asegura que el body ocupe al menos la altura de la ventana */
+    overflow-x: hidden;
+}
+
+.sidebar {
+    background-color: #27272a;
+    width: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* La barra lateral ocupa toda la altura de la ventana */
+    top: 0;
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.sidebar-header .report-icon {
+    font-size: 2rem;
+}
+
+.sidebar-header span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-nav li.active {
+    background-color: #3f3f46;
+}
+
+.sidebar-nav li:hover {
+    background-color: #3f3f46;
+}
+
+.sidebar-nav li .icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.sidebar-nav li span {
+    font-size: 0.95rem;
+}
+
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid #3f3f46;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.sidebar-footer .icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.sidebar-footer span {
+    font-size: 0.95rem;
+}
+
+.report-container {
+    background-color: #27272a;
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 10px; 
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 120px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    max-width: 1000px; 
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #3f3f46;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.header-left h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.header-left .date-range {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+}
+
+.header .actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header .date-picker {
+    background-color: #3f3f46;
+    color: #e2e2e2;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.header .download-button {
+    background-color: #10b981;
+    color: #e2e2e2;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.header .icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.sales-table th {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #3f3f46;
+    font-weight: bold;
+    color: #d4d4d8;
+}
+
+.sales-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #3f3f46;
+}
+
+.sales-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.sales-table .total-row td {
+    padding-top: 15px;
+    font-weight: bold;
+}
+
+.summary {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    text-align: left;
+    padding-top: 10px;
+}
