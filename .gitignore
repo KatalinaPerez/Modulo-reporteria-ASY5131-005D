@@ -22,7 +22,6 @@ Pipfile.lock
 
 #Carpeta donde se generan los pdf
 
-src/pdf_generados/*pdf
 
-#key firebase
-config/serviceAccountKey.json
+src/pdf_generados/*.pdf
+
