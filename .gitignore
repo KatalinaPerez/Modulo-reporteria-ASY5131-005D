@@ -20,6 +20,8 @@ Pipfile.lock
 .env
 .env.local
 
-#PDFs de ejemplo
+#Carpeta donde se generan los pdf
+
 
 src/pdf_generados/*.pdf
+
