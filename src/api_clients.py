@@ -9,7 +9,10 @@ def obtener_ventas():
     try:
         response = requests.get(f"{BASE_URL_VENTAS}/resumen") # 'resumen' es el endpint escpecífico en donde podemos sacar la info en este ejemplo
         response.raise_for_status() #Con esto verificamos si solicitud fue exitosa (200), si falla va a la excepcion
+        data_response = response.json
+
         return response.json() #transformamos los datos llamados al formato Json
+    
     except requests.RequestException as e:
         print(f"Error al obtener ventas: {e}")
         return [] 
