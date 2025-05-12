@@ -2,8 +2,7 @@ Antes de comenzar, asegúrate de tener instalado:
 
 - Python 3.10 o superior
 - Git (opcional, si clonas el proyecto)
-- Acceso a un token de Doppler 
-    (dp.st.dev WPEYWCAnvo5UPzxgfNB273CbuFwWr4jSrw5JScBe3MR)
+- Acceso a un token de Doppler
 
 2️⃣Un buen paso es crear un entorno virtual. Esto debe ser dentro da la carpeta de tu proyecto:
 
