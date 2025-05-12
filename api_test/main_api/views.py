@@ -20,6 +20,7 @@ def mostrar_usuarios(request):
         usuarios = []
     return render(request, "usuarios.html", {"usuarios": usuarios})
 
+
 def generar_reporte(request):
     try:
         response = requests.get('https://jsonplaceholder.typicode.com/users')
