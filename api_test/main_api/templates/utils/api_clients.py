@@ -4,6 +4,16 @@ import requests
 BASE_URL_VENTAS = "http://localhost:8000/api/ventas"
 BASE_URL_SEGURIDAD = "http://localhost:8001/api/seguridad"
 BASE_URL_DESPACHO = "http://localhost:8002/api/despacho"
+BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
+
+def obtener_usuarios():
+    try:
+        response = requests.get(BASE_URL_USUARIOS)
+        response.raise_for_status() # Lanza una excepción para códigos de estado de error (4xx o 5xx)
+        return response.json()
+    except requests.RequestException as e:
+        print(f"Error al obtener usuarios: {e}")
+        return []
 
 def obtener_ventas():
     try:
