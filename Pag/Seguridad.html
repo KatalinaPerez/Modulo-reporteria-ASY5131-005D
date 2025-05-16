@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Reportería</title>
+    <link rel="stylesheet" href="Seguridad.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">Reporteria❤️</div>
+        <nav class="menu">
+            <a href="MainPage.html" class="#">
+                <span class="icon">📊</span>
+                <span>Ventas</span>
+            </a>
+            <a href="#">
+                <span class="icon">📈</span>
+                <span>Proveedores</span>
+            </a>
+            <a href="#">
+                <span class="icon">📈</span>
+                <span>Contabilidad</span>
+            </a>
+            <a href="#">
+                <span class="icon">📈</span>
+                <span>Despacho</span>
+            </a>
+            <a href="#">
+                <span class="icon">📈</span>
+                <span>Adquisiciones</span>
+            </a>
+            <a href="#">
+                <span class="icon">📈</span>
+                <span>Stock</span>
+            </a>
+            <a href="#" class="active">
+                <span class="icon">📈</span>
+                <span>Seguridad</span>
+            </a>
+            <a href="#">
+                <span class="icon">👥</span>
+                <span>Ayuda</span>
+            </a>
+        </nav>
+    </aside>
+    <main class="content">
+        <header class="header">
+            <h1>Reporte Seguridad</h1>
+            <div class="date-range">Fecha</div>
+            <button class="connect-data-button">Descarga PDF</button>
+        </header>
+        <section class="dashboard">
+            <div class="card security">
+                <div class="card-header">
+                    <h3>Usuarios de Seguridad (Simulado)</h3>
+                    <button class="export-button"><span></span></button>
+                </div>
+                <div class="card-body table-summary">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre de Usuario</th>
+                                <th>Nombre Completo</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody id="security-users">
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <span>Filtrar por:</span>
+                        <select id="filter-column">
+                            <option value="id">ID</option>
+                            <option value="username">Nombre de Usuario</option>
+                            <option value="name">Nombre Completo</option>
+                            <option value="email">Email</option>
+                        </select>
+                        <input type="text" id="filter-value" placeholder="Término de búsqueda">
+                        <button id="apply-filter">Filtrar</button>
+
+                        <span>Ordenar por:</span>
+                        <select id="sort-column">
+                            <option value="id">ID</option>
+                            <option value="username">Nombre de Usuario</option>
+                            <option value="name">Nombre Completo</option>
+                            <option value="email">Email</option>
+                        </select>
+                        <select id="sort-order">
+                            <option value="asc">Ascendente</option>
+                            <option value="desc">Descendente</option>
+                        </select>
+                        <button id="apply-sort">Ordenar</button>
+
+                        <span>1-10 / 10</span>
+                        <button>&lt;</button>
+                        <button>&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="Fakeapi.js"></script>
+</body>
+</html>
