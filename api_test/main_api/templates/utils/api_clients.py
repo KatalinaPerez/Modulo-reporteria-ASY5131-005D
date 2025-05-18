@@ -1,9 +1,9 @@
 import requests
 
 # Esto luego cambiará por la URL real del módulo de ventas
-BASE_URL_VENTAS = "http://localhost:8000/api/ventas"
-BASE_URL_SEGURIDAD = "http://localhost:8001/api/seguridad"
-BASE_URL_DESPACHO = "http://localhost:8002/api/despacho"
+BASE_URL_VENTAS = "link de la api"
+BASE_URL_SEGURIDAD = "link de la api"
+BASE_URL_DESPACHO = "link de la api"
 BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
 
 def obtener_usuarios():
@@ -15,6 +15,7 @@ def obtener_usuarios():
         print(f"Error al obtener usuarios: {e}")
         return []
 
+#Dejo base para conectar otras apis
 def obtener_ventas():
     try:
         response = requests.get(f"{BASE_URL_VENTAS}/resumen") # 'resumen' es el endpint escpecífico en donde podemos sacar la info en este ejemplo

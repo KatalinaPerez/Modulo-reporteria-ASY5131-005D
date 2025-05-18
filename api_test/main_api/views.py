@@ -16,6 +16,12 @@ from .templates.utils.pdf_generator import generar_reporte
 def index(request):
     return render(request, 'index.html')
 
+def MainPage(request):
+    return render(request, 'MainPage.html')
+
+def Seguridad(request):
+    return render(request, 'Seguridad.html')
+
 def mostrar_usuarios(request):
     usuarios = obtener_usuarios()
     if not usuarios:
@@ -84,3 +90,4 @@ download_s3(BUCKET_NAME, s3_key, download_path)
 # Listar archivos en el bucket
 list_files_s3(BUCKET_NAME, S3_KEY_PREFIX)'''
        
+
