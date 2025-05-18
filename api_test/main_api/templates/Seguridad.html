@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Reportería</title>
-    <link rel="stylesheet" href=".css/Seguridad.css">
+    <link rel="stylesheet" href= "{% static 'css/Seguridad.css' %}">
 </head>
 <body>
     <aside class="sidebar">
@@ -48,7 +49,8 @@
         <header class="header">
             <h1>Reporte Seguridad</h1>
             <div class="date-range">Fecha</div>
-            <button class="connect-data-button">Descarga PDF</button>
+            <button class="connect-data-button" onclick="window.location.href='/descargar_pdf'" >Descarga PDF</button>
+            <button class="connect-data-button" onclick="window.location.href='/descargar_s3'" >Descarga PDF</button>
         </header>
         <section class="dashboard">
             <div class="card security">

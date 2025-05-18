@@ -7,6 +7,7 @@ urlpatterns = [
     path("", views.MainPage, name="MainPage"),
     #path("", views.index, name="index"),
     path("seguridad/", views.Seguridad, name="Seguridad"),
+    path("stock/", views.Stock, name="Stock"),
     path("usuarios/", views.mostrar_usuarios, name="mostrar_usuarios"),
     path("descargar_pdf/", views.descargar_pdf, name="descargar_pdf"),
     path("descargar_s3/", views.descargar_s3, name="descargar_s3"),

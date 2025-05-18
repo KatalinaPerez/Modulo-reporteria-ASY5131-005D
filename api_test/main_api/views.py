@@ -22,6 +22,10 @@ def MainPage(request):
 def Seguridad(request):
     return render(request, 'Seguridad.html')
 
+def Stock(request):
+    return render(request, 'Stock.html')
+
+
 def mostrar_usuarios(request):
     usuarios = obtener_usuarios()
     if not usuarios:
