@@ -2,7 +2,7 @@ import requests
 from django.http import HttpResponse
 from fpdf import FPDF
 
-def generar_reporte(usuarios):
+def generar_reporte_usu(usuarios):
     try:
         response = requests.get('https://jsonplaceholder.typicode.com/users')
         usuarios = response.json()
