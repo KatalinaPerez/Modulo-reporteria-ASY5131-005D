@@ -10,20 +10,8 @@
 <body>
   <aside class="sidebar">
     <div class="logo">Reporteria❤️</div>
-    <nav class="menu">
-      <a href="{% url 'MainPage' %}">
-        <span class="icon">📊</span><span>Ventas</span>
-      </a>
-      <!-- … otras secciones … -->
-      <a href="{% url 'Stock' %}" class="active">
-        <span class="icon">📈</span><span>Stock</span>
-      </a>
-      <a href="{% url 'Seguridad' %}">
-        <span class="icon">🔒</span><span>Seguridad</span>
-      </a>
-    </nav>
+    {% include 'navbar.html' %}
   </aside>
-
   <main class="content">
     <header class="header">
       <h1>Reporte de Stock</h1>

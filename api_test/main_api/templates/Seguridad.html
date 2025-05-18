@@ -9,48 +9,15 @@
 </head>
 <body>
     <aside class="sidebar">
-        <div class="logo">Reporteria❤️</div>
-        <nav class="menu">
-            <a href="MainPage.html" class="#">
-                <span class="icon">📊</span>
-                <span>Ventas</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Proveedores</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Contabilidad</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Despacho</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Adquisiciones</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Stock</span>
-            </a>
-            <a href="#" class="active">
-                <span class="icon">📈</span>
-                <span>Seguridad</span>
-            </a>
-            <a href="#">
-                <span class="icon">👥</span>
-                <span>Ayuda</span>
-            </a>
-        </nav>
+        <div class="logo">Reporteria ❤️</div>
+        {% include 'navbar.html' %}
     </aside>
     <main class="content">
         <header class="header">
             <h1>Reporte Seguridad</h1>
             <div class="date-range">Fecha</div>
             <button class="connect-data-button" onclick="window.location.href='/descargar_pdf'" >Descarga PDF</button>
-            <button class="connect-data-button" onclick="window.location.href='/descargar_s3'" >Descarga PDF</button>
+            <button class="connect-data-button" onclick="window.location.href='/descargar_s3'" >Descarga PDF de s3</button>
         </header>
         <section class="dashboard">
             <div class="card security">
@@ -103,6 +70,6 @@
             </div>
         </section>
     </main>
-    <script src="Fakeapi.js"></script>
+    <script src="{% static 'Fakeapi.js' %}"></script>
 </body>
 </html>
