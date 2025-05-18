@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 from Proyecto.api_test.main_api.templates.utils.keys import BUCKET_NAME
 from s3_utils import upload_s3, download_s3, list_files_s3
-from Proyecto.api_test.main_api.templates.utils.pdf_generator import generar_pdf
+from Proyecto.api_test.main_api.templates.utils.pdf_usuarios import generar_pdf
 
 # Al llamar los verdaderos datos, estos deben estar en json
 datos_ventas = [

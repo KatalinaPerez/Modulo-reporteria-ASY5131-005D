@@ -1,54 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Reportería</title>
-    <link rel="stylesheet" href=".css/Seguridad.css">
+    <link rel="stylesheet" href= "{% static 'css/Seguridad.css' %}">
 </head>
 <body>
     <aside class="sidebar">
-        <div class="logo">Reporteria❤️</div>
-        <nav class="menu">
-            <a href="MainPage.html" class="#">
-                <span class="icon">📊</span>
-                <span>Ventas</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Proveedores</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Contabilidad</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Despacho</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Adquisiciones</span>
-            </a>
-            <a href="#">
-                <span class="icon">📈</span>
-                <span>Stock</span>
-            </a>
-            <a href="#" class="active">
-                <span class="icon">📈</span>
-                <span>Seguridad</span>
-            </a>
-            <a href="#">
-                <span class="icon">👥</span>
-                <span>Ayuda</span>
-            </a>
-        </nav>
+        <div class="logo">Reporteria ❤️</div>
+        {% include 'navbar.html' %}
     </aside>
     <main class="content">
         <header class="header">
             <h1>Reporte Seguridad</h1>
             <div class="date-range">Fecha</div>
-            <button class="connect-data-button">Descarga PDF</button>
+            <button class="connect-data-button" onclick="window.location.href='/des_pdf_usu'" >Descarga PDF</button>
+            <button class="connect-data-button" onclick="window.location.href='/desc_s3_usu'" >Descarga PDF de s3</button>
         </header>
         <section class="dashboard">
             <div class="card security">
@@ -101,6 +70,6 @@
             </div>
         </section>
     </main>
-    <script src="Fakeapi.js"></script>
+    <script src="{% static 'Fakeapi.js' %}"></script>
 </body>
 </html>

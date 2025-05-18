@@ -1,7 +1,7 @@
 import requests
 
 # Esto luego cambiará por la URL real del módulo de ventas
-BASE_URL_VENTAS = "link de la api"
+BASE_URL_VENTAS = "https://fakestoreapi.com/products"
 BASE_URL_SEGURIDAD = "link de la api"
 BASE_URL_DESPACHO = "link de la api"
 BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
@@ -16,17 +16,14 @@ def obtener_usuarios():
         return []
 
 #Dejo base para conectar otras apis
-def obtener_ventas():
+def obtener_productos():
     try:
-        response = requests.get(f"{BASE_URL_VENTAS}/resumen") # 'resumen' es el endpint escpecífico en donde podemos sacar la info en este ejemplo
+        response = requests.get(f"{BASE_URL_VENTAS}") # 'resumen' es el endpint escpecífico en donde podemos sacar la info en este ejemplo
         response.raise_for_status() #Con esto verificamos si solicitud fue exitosa (200), si falla va a la excepcion
-
-        data_response = response.json
-
         return response.json() #transformamos los datos llamados al formato Json
 
     except requests.RequestException as e:
-        print(f"Error al obtener ventas: {e}")
+        print(f"Error al obtener productos: {e}")
         return [] 
 
 def obtener_seguridad():
