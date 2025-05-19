@@ -10,6 +10,7 @@ urlpatterns = [
     path("usuarios/", views.mostrar_usuarios, name="mostrar_usuarios"),
     path("descargar_pdf/", views.descargar_pdf, name="descargar_pdf"),
     path("descargar_s3/", views.descargar_s3, name="descargar_s3"),
-] 
+    path('editar_pdf/', views.editar_pdf, name='editar_pdf'),
+]
 if settings.DEBUG:
     urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
