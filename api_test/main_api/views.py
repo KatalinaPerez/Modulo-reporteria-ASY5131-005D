@@ -15,7 +15,6 @@ from .templates.utils.pdf_usuarios import generar_reporte_usu, generar_reporte_p
 from .templates.utils.pdf_products import generar_reporte_products
 
 
-
 def index(request):
     return render(request, 'index.html')
 
@@ -90,6 +89,33 @@ def desc_pdf_products(request):
     response['Content-Disposition'] = 'attachment; filename="reporte_productos.pdf"'
     return response
 
+def desc_s3_products(request):
+    productos = obtener_productos()
+    if not productos:
+        return HttpResponse("Error al obtener productos", status=500)
+    
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
+    S3_KEY_PREFIX = f"reportes_productos/{fecha_actual}/"
+    nombre_archivo = f"reporte_productos_{fecha_actual}.pdf"
+    s3_key = f"{S3_KEY_PREFIX}{nombre_archivo}"
+
+    try:
+        pdf_bytes = generar_reporte_products(productos)
+    except Exception as e:
+        return HttpResponse(f"Error generando el PDF de productos: {e}", status=500)
+
+    upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+    if not upload_success:
+        return HttpResponse("Error al subir el PDF a S3", status=500)
+
+    download_path = os.path.join(os.path.expanduser("~"), "Downloads", nombre_archivo)
+    download_success = download_s3(BUCKET_NAME, s3_key, download_path)
+
+    if not download_success:
+        return HttpResponse("Error al descargar el PDF desde S3", status=500)
+
+    return HttpResponse(f"✅ PDF de productos subido a S3 y descargado en: {download_path}", status=200)
+
 def editar_pdf(request):
     # Obtener datos de usuarios
     usuarios = requests.get('https://jsonplaceholder.typicode.com/users').json()
@@ -142,41 +168,3 @@ def editar_pdf(request):
     
     # Mostrar formulario de edición
     return render(request, 'editar_pdf.html', {'usuarios': usuarios})
-
-
-
-'''# Fecha actual
-fecha_actual = datetime.now().strftime("%Y-%m-%d")
-S3_KEY_PREFIX = f"reportes/{fecha_actual}/"
-nombre_archivo = f"reporte_ventas_{fecha_actual}.pdf"
-s3_key = f"{S3_KEY_PREFIX}{nombre_archivo}"
-
-def desc_s3_products(request):
-    productos = obtener_productos()
-    if not productos:
-        return HttpResponse("Error al obtener productos", status=500)
-    
-    fecha_actual = datetime.now().strftime("%Y-%m-%d")
-    S3_KEY_PREFIX = f"reportes_productos/{fecha_actual}/"
-    nombre_archivo = f"reporte_productos_{fecha_actual}.pdf"
-    s3_key = f"{S3_KEY_PREFIX}{nombre_archivo}"
-
-    try:
-        pdf_bytes = generar_reporte_products(productos)
-    except Exception as e:
-        return HttpResponse(f"Error generando el PDF de productos: {e}", status=500)
-
-    upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
-    if not upload_success:
-        return HttpResponse("Error al subir el PDF a S3", status=500)
-
-    download_path = os.path.join(os.path.expanduser("~"), "Downloads", nombre_archivo)
-    download_success = download_s3(BUCKET_NAME, s3_key, download_path)
-
-    if not download_success:
-        return HttpResponse("Error al descargar el PDF desde S3", status=500)
-
-    return HttpResponse(f"✅ PDF de productos subido a S3 y descargado en: {download_path}", status=200)'''
-
-
-
