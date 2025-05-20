@@ -1,27 +1,34 @@
 import os
-from dotenv import load_dotenv
+import json
+import subprocess
 
-def cargar_secretos_env():
-    """Carga variables de entorno desde archivo .env"""
+def cargar_secretos_doppler():
     try:
-        load_dotenv()  # Busca automáticamente el archivo .env en el directorio actual
-        
-        # Verificación básica de variables obligatorias
-        required_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'BUCKET_NAME']
-        for var in required_vars:
-            if not os.getenv(var):
-                raise ValueError(f"❌ Variable faltante: {var}")
+        # Ejecutar el comando de Doppler para obtener los secretos en formato JSON
+        resultado = subprocess.run(
+            ["doppler", "secrets", "download", "--no-file", "--format", "json"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        secretos = json.loads(resultado.stdout)
 
-    except Exception as e:
-        print(f"Error al cargar variables de entorno: {str(e)}")
-        raise
+        # Establecer cada secreto como una variable de entorno
+        for clave, valor in secretos.items():
+            os.environ[clave] = valor
 
-# Cargar secretos al iniciar
-cargar_secretos_env()
+    except subprocess.CalledProcessError as e:
+        print("❌ Error al cargar secretos desde Doppler:", e.stderr)
+    except json.JSONDecodeError:
+        print("❌ Error al parsear los secretos de Doppler.")
 
-# Variables accesibles (igual que antes)
+# Cargar secretos al entorno antes de usarlos
+cargar_secretos_doppler()
+
+# Variables de entorno disponibles en el código
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')  # Opcional
-REGION_NAME = os.getenv('AWS_REGION', 'us-east-1')  # Default
-BUCKET_NAME = os.getenv('BUCKET_NAME', 'reportesgen')  # Default
+
+AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')  # Puedes ignorarlo si no lo usas
+REGION_NAME = os.getenv('AWS_REGION', 'us-east-1')  # Valor por defecto
+BUCKET_NAME = os.getenv('BUCKET_NAME', 'modreporteria')  # Valor por defecto
