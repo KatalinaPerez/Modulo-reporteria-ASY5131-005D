@@ -12,7 +12,8 @@ from .templates.utils.s3_utils import upload_s3, download_s3, list_files_s3
 from .templates.utils.pdf_usuarios import generar_reporte_usu, generar_reporte_personalizado
 from .templates.utils.pdf_products import generar_reporte_products
 
-BUCKET_NAME = 'reportesgen'
+
+#BUCKET_NAME = 'reportesgen'
 
 def index(request):
     return render(request, 'index.html')
@@ -47,7 +48,7 @@ def desc_pdf_usu(request):
     response['Content-Disposition'] = 'attachment; filename="reporte_usuarios.pdf"'
     return response
 
-def desc_s3_usu(request):
+'''def desc_s3_usu(request):
     usuarios = obtener_usuarios()
     if not usuarios:
         return HttpResponse("Error al obtener usuarios", status=500)
@@ -73,6 +74,7 @@ def desc_s3_usu(request):
         return HttpResponse("Error al descargar el PDF desde S3", status=500)
 
     return HttpResponse(f"✅ PDF subido a S3 y descargado localmente como: {download_path}", status=200)
+'''
 
 def desc_pdf_products(request):
     productos = obtener_productos()
@@ -88,7 +90,7 @@ def desc_pdf_products(request):
     response['Content-Disposition'] = 'attachment; filename="reporte_productos.pdf"'
     return response
 
-def desc_s3_products(request):
+'''def desc_s3_products(request):
     productos = obtener_productos()
     if not productos:
         return HttpResponse("Error al obtener productos", status=500)
@@ -114,7 +116,7 @@ def desc_s3_products(request):
         return HttpResponse("Error al descargar el PDF desde S3", status=500)
 
     return HttpResponse(f"✅ PDF de productos subido a S3 y descargado en: {download_path}", status=200)
-
+'''
 def editar_pdf(request):
     # Obtener datos de usuarios desde API externa
     usuarios = requests.get('https://jsonplaceholder.typicode.com/users').json()
@@ -180,3 +182,40 @@ def editar_pdf(request):
     # Si es GET, mostrar formulario
     return render(request, 'editar_pdf.html', {'usuarios': usuarios})
 
+def desc_s3(request, tipo):
+    print("TIPO RECIBIDO:", tipo)
+    if tipo == "usuarios":
+        datos = obtener_usuarios()
+        generar_pdf = generar_reporte_usu
+        carpeta_s3 = "reportes"
+        nombre_base = "reporte_usuarios"
+    elif tipo == "productos":
+        datos = obtener_productos()
+        generar_pdf = generar_reporte_products
+        carpeta_s3 = "reportes_productos"
+        nombre_base = "reporte_productos"
+    else:
+        return HttpResponse("❌ Tipo de reporte no válido", status=400)
+
+    if not datos:
+        return HttpResponse(f"Error al obtener datos de {tipo}", status=500)
+
+    try:
+        pdf_bytes = generar_pdf(datos)
+    except Exception as e:
+        return HttpResponse(f"Error generando el PDF de {tipo}: {e}", status=500)
+
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
+    nombre_archivo = f"{nombre_base}_{fecha_actual}.pdf"
+    s3_key = f"{carpeta_s3}/{fecha_actual}/{nombre_archivo}"
+
+    upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+    if not upload_success:
+        return HttpResponse("Error al subir el PDF a S3", status=500)
+
+    download_path = os.path.join(os.path.expanduser("~"), "Downloads", nombre_archivo)
+    download_success = download_s3(BUCKET_NAME, s3_key, download_path)
+    if not download_success:
+        return HttpResponse("Error al descargar el PDF desde S3", status=500)
+
+    return HttpResponse(f"✅ PDF de {tipo} subido a S3 y descargado en: {download_path}", status=200)
