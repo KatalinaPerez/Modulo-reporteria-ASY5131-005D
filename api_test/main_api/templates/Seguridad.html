@@ -18,6 +18,7 @@
             <div class="date-range">Fecha</div>
             <button class="connect-data-button" onclick="window.location.href='/desc_pdf_usu'" >Descarga PDF</button>
             <button class="connect-data-button" onclick="window.location.href='/descargar/usuarios/'" >Descarga PDF de s3</button>
+            <button class="connect-data-button" onclick="window.location.href='/editar_pdf'">Editar pdf</button>  
         </header>
         <section class="dashboard">
             <div class="card security">
@@ -29,10 +30,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre de Usuario</th>
                                 <th>Nombre Completo</th>
                                 <th>Email</th>
+                                <th>Dirección</th>
+                                <th>Ciudad</th>
                             </tr>
                         </thead>
                         <tbody id="security-users">
@@ -41,20 +42,20 @@
                     <div class="pagination">
                         <span>Filtrar por:</span>
                         <select id="filter-column">
-                            <option value="id">ID</option>
-                            <option value="username">Nombre de Usuario</option>
                             <option value="name">Nombre Completo</option>
                             <option value="email">Email</option>
+                            <option value="address">Dirección</option>
+                            <option value="city">Ciudad</option>
                         </select>
                         <input type="text" id="filter-value" placeholder="Término de búsqueda">
                         <button id="apply-filter">Filtrar</button>
 
                         <span>Ordenar por:</span>
                         <select id="sort-column">
-                            <option value="id">ID</option>
-                            <option value="username">Nombre de Usuario</option>
                             <option value="name">Nombre Completo</option>
                             <option value="email">Email</option>
+                            <option value="address">Dirección</option>
+                            <option value="city">Ciudad</option>
                         </select>
                         <select id="sort-order">
                             <option value="asc">Ascendente</option>

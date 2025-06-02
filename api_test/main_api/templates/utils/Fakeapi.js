@@ -19,15 +19,15 @@ function renderTable(users) {
     securityUsersTableBody.innerHTML = '';
     users.forEach(user => {
         const row = securityUsersTableBody.insertRow();
-        const idCell = row.insertCell();
-        const usernameCell = row.insertCell();
         const nameCell = row.insertCell();
         const emailCell = row.insertCell();
+        const adressCell = row.insertCell();
+        const cityCell = row.insertCell()
 
-        idCell.textContent = user.id;
-        usernameCell.textContent = user.username;
         nameCell.textContent = user.name;
         emailCell.textContent = user.email;
+        adressCell.textContent = user.address.street + ', ' + user.address.suite;
+        cityCell.textContent = user.address.city;
     });
 }
 
@@ -45,7 +45,6 @@ applyFilterButton.addEventListener('click', applyFilter);
 
 window.onload = loadSecurityUsersData;
 
-// Aquí podrías tener lógica para el ordenamiento si la implementas.
 const sortColumnSelect = document.getElementById('sort-column');
 const sortOrderSelect = document.getElementById('sort-order');
 const applySortButton = document.getElementById('apply-sort');

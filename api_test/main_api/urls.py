@@ -15,6 +15,7 @@ urlpatterns = [
     path("desc_pdf_products/", views.desc_pdf_products, name="desc_pdf_products"),
     #path("desc_s3_products/", views.desc_s3_products, name="desc_s3_products"),
     path('editar_pdf/', views.editar_pdf, name='editar_pdf'),
+    path('api/pdf/<str:tipo>/',views.api_descargar_pdf_s3, name='api_descargar_pdf_s3'),
 ]
 if settings.DEBUG:
     urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
