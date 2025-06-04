@@ -1,10 +1,8 @@
 import requests
 
-# Esto luego cambiará por la URL real del módulo de ventas
 BASE_URL_VENTAS = "https://fakestoreapi.com/products"
-BASE_URL_SEGURIDAD = "link de la api"
-BASE_URL_DESPACHO = "link de la api"
 BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
+BASE_URL_CONTABILIDAD = "http://34.225.192.85:8000/api/schema/swagger-ui/#/"
 
 def obtener_usuarios():
     try:
@@ -26,20 +24,11 @@ def obtener_productos():
         print(f"Error al obtener productos: {e}")
         return [] 
 
-def obtener_seguridad():
+def obtener_contabilidad():
     try:
-        response = requests.get(f"{BASE_URL_SEGURIDAD}/eventos")  # ejemplo
+        response = requests.get(BASE_URL_CONTABILIDAD)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error al obtener datos de seguridad: {e}")
-        return []
-
-def obtener_despachos():
-    try:
-        response = requests.get(f"{BASE_URL_DESPACHO}/movimientos")  # ejemplo
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        print(f"Error al obtener datos de despacho: {e}")
+        print(f"Error al obtener contabilidad: {e}")
         return []

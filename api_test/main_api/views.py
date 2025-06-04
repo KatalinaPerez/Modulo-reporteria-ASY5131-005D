@@ -6,11 +6,12 @@ from django.http import HttpResponse, JsonResponse
 import os
 import platform
 from django.http import HttpResponse
-from .templates.utils.api_clients import obtener_usuarios, obtener_productos
+from .templates.utils.api_clients import obtener_usuarios, obtener_productos, obtener_contabilidad
 from .templates.utils.keys import BUCKET_NAME
 from .templates.utils.s3_utils import upload_s3, download_s3, list_files_s3, get_s3
 from .templates.utils.pdf_usuarios import generar_reporte_usu, generar_reporte_personalizado
 from .templates.utils.pdf_products import generar_reporte_products
+from .templates.utils.pdf_contabilidad import generar_reporte_cont
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required, permission_required #Importa los permisos
@@ -62,6 +63,20 @@ def desc_pdf_products(request):
 
     response = HttpResponse(pdf_bytes, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="reporte_productos.pdf"'
+    return response
+
+def desc_pdf_contabilidad(request):
+    contabilidad = obtener_contabilidad()
+    if not contabilidad:
+        return HttpResponse("Error al obtener datos de contabilidad", status=500)
+
+    try:
+        pdf_bytes = generar_reporte_cont(contabilidad)
+    except Exception as e:
+        return HttpResponse(f"Error generando el PDF de contabilidad: {e}", status=500)
+
+    response = HttpResponse(pdf_bytes, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte_contabilidad.pdf"'
     return response
 
 def editar_pdf(request):
@@ -141,6 +156,7 @@ def desc_s3(request, tipo):
         generar_pdf = generar_reporte_products
         carpeta_s3 = "reportes_productos"
         nombre_base = "reporte_productos"
+        
     else:
         return HttpResponse("❌ Tipo de reporte no válido", status=400)
 
@@ -172,8 +188,9 @@ def api_descargar_pdf_s3(request, tipo):
     if tipo == "usuarios":
         datos = obtener_usuarios()
         generar_pdf = generar_reporte_usu
-        carpeta_s3 = "reportes"
+        carpeta_s3 = "reportes_usuarios"
         nombre_base = "reporte_usuarios"
+
     elif tipo == "productos":
         datos = obtener_productos()
         generar_pdf = generar_reporte_products
@@ -213,7 +230,7 @@ def api_descargar_pdf_s3(request, tipo):
 
 #:::::::::: Permisos que otorgamos con nuestra api :::::::::
 
-@login_required
+
 @permission_required('stock.view_stock', raise_exception=True) 
 def stock_view(request):
     return render(request, 'stock/stock.html')
