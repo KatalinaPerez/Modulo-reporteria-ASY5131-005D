@@ -3,20 +3,17 @@
     <nav class="menu">
         <a href="{% url 'MainPage' %}" 
            class="{% if request.resolver_match.url_name == 'MainPage' %}active{% endif %}">
-            <span class="icon">📊</span><span>Ventas</span>
-        </a>
-        <a href="#"><span class="icon">📈</span><span>Proveedores</span></a>
-        <a href="#"><span class="icon">📈</span><span>Contabilidad</span></a>
-        <a href="#"><span class="icon">📈</span><span>Despacho</span></a>
-        <a href="#"><span class="icon">📈</span><span>Adquisiciones</span></a>
+            <span class="icon">📊</span><span>Ventas</span> </a>
+        <a href="{%url 'Proveedores' %}"><span class="icon">📈</span><span>Proveedores</span></a>
+        <a href="{%url 'Contabilidad' %}"><span class="icon">📈</span><span>Contabilidad</span></a>
+        <a href="{%url 'Despacho' %}"><span class="icon">📈</span><span>Despacho</span></a>
+        <a href="{% url 'Adquisiciones' %}"><span class="icon">📈</span><span>Adquisiciones</span></a>
         <a href="{% url 'Stock' %}" 
            class="{% if request.resolver_match.url_name == 'Stock' %}active{% endif %}">
-            <span class="icon">📈</span><span>Stock</span>
-        </a>
+            <span class="icon">📈</span><span>Stock</span> </a>
         <a href="{% url 'Seguridad' %}" 
            class="{% if request.resolver_match.url_name == 'Seguridad' %}active{% endif %}">
-            <span class="icon">📈</span><span>Seguridad</span>
-        </a>
+            <span class="icon">📈</span><span>Seguridad</span> </a>
         <a href="#"><span class="icon">👥</span><span>Ayuda</span></a>
     </nav>
 </aside>
