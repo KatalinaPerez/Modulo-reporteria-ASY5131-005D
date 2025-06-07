@@ -1,7 +1,12 @@
+# main_api/urls.py (el de tu aplicación, NO el principal)
+
 from django.urls import path
 from . import views
-from django.conf import settings
-from django.conf.urls.static import static
+# IMPORTANTE: Asegúrate de que NO haya importaciones de settings, static, staticfiles_urlpatterns aquí.
+# from django.conf import settings
+# from django.conf.urls.static import static
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+# import os
 
 urlpatterns = [
     path("", views.MainPage, name="MainPage"),
@@ -12,7 +17,8 @@ urlpatterns = [
     path("contabilidad/", views.Contabilidad, name="Contabilidad"),
     path("proveedores/", views.Proveedores, name="Proveedores"),
     path("adquisiciones/", views.Adquisiciones, name="Adquisiciones"),
-    
+    path("despacho/", views.Despacho, name="Despacho"),
+
     path('api/pdf/<str:tipo>/',views.api_descargar_pdf_s3, name='api_descargar_pdf_s3'),
     path("desc_pdf_usu/", views.desc_pdf_usu, name="des_pdf_usu"),
     path("desc_pdf_contabilidad/", views.desc_pdf_contabilidad, name="desc_pdf_contabilidad"),
@@ -21,5 +27,7 @@ urlpatterns = [
     #path("desc_s3_usu/", views.desc_s3_usu, name="desc_s3_usu"),
     #path("desc_s3_products/", views.desc_s3_products, name="desc_s3_products"),
 ]
-if settings.DEBUG:
-    urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# IMPORTANTE: Asegúrate de que NO haya bloques 'if settings.DEBUG:' aquí al final.
+# if settings.DEBUG:
+#    urlpatterns += staticfiles_urlpatterns()

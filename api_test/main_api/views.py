@@ -30,6 +30,9 @@ def Seguridad(request):
 def Stock(request):
     return render(request, 'Stock.html')
 
+def Despacho(request):
+    return render(request, 'Despacho.html')
+
 def mostrar_usuarios(request):
     usuarios = obtener_usuarios()
     if not usuarios:

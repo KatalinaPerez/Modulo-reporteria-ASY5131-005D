@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'main_api',
+    'django.contrib.staticfiles', # Indispensable para servir archivos estáticos
+    'main_api', # Asegúrate de que tu app 'main_api' esté listada aquí
     'rest_framework',
 ]
 
@@ -57,8 +57,8 @@ ROOT_URLCONF = 'api_test.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, "templates")], # Esto busca una carpeta 'templates' en la raíz del proyecto
+        'APP_DIRS': True, # Esto es crucial para que Django busque templates dentro de las carpetas 'templates' de las apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -116,12 +116,24 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-BASE_DIR= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' # La URL base para tus archivos estáticos
 
-STATICFILE_DIRS= [
-    os.path.join(BASE_DIR, "static")]
+# STATICFILES_DIRS es una lista de directorios donde el staticfiles app de Django
+# buscará archivos estáticos ADICIONALES, además de los que encuentra dentro
+# de las carpetas 'static' de las apps en INSTALLED_APPS.
+# Aquí lo configuramos para que apunte directamente a la carpeta 'static' de tu app 'main_api'.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'main_api', 'static'), # Ruta ABSOLUTA a tu carpeta main_api/static/
+]
+print("DEBUG: STATICFILES_DIRS[0] resuelto a:", os.path.join(BASE_DIR, 'main_api', 'static'))
+
+# STATIC_ROOT es el directorio donde Django recopilará todos los archivos estáticos
+# (de STATICFILES_DIRS y de las apps) cuando ejecutes 'python manage.py collectstatic'.
+# Esto se usa principalmente en producción. En desarrollo, no es necesario para servir.
+# Si lo tienes definido, asegúrate de que apunta a una carpeta *vacía* o *no existente*
+# antes de ejecutar collectstatic en producción.
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_collected') # Ejemplo para producción (descomentar para producción)
 
 
 # Default primary key field type
