@@ -1,0 +1,163 @@
+/* Estilos generales para el cuerpo de la página */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 30px; /* Un poco más de padding para que el formulario no esté pegado a los bordes */
+    background-color: #f4f6f8; /* Color de fondo claro, como en MainPage */
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido del formulario */
+}
+
+h1 {
+    font-size: 2.2em;
+    color: #2c3e50; /* Color de títulos principales */
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: #2c3e50;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0; /* Línea separadora para el título de la tabla */
+    padding-bottom: 10px;
+    width: 100%; /* Asegura que la línea se extienda */
+    text-align: center;
+}
+
+/* Estilos para el formulario en general */
+form {
+    background-color: #fff; /* Fondo blanco para el formulario, como una tarjeta */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    width: 100%;
+    max-width: 900px; /* Limita el ancho del formulario para mejor legibilidad */
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+/* Estilos para cada grupo de campo (label + input/textarea) */
+div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block; /* Cada label en su propia línea */
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2c3e50; /* Color de etiquetas consistente */
+    font-size: 1.1em;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: calc(100% - 22px); /* Ancho completo menos padding y borde */
+    padding: 10px;
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 4px;
+    font-size: 1em;
+    color: #333;
+    box-sizing: border-box; /* Incluye padding y border en el ancho */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+    min-height: 100px; /* Altura mínima para el área de texto */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: #6a1b9a; /* Color de foco morado, inspirado en tu sidebar */
+    outline: none; /* Eliminar el outline por defecto */
+    box-shadow: 0 0 8px rgba(106, 27, 154, 0.2); /* Sombra suave al enfocar */
+}
+
+/* Estilos para la tabla de usuarios */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Bordes de celdas unidos */
+    margin-top: 20px;
+    background-color: #fdfdfd; /* Un blanco muy ligero para el fondo de la tabla */
+    border-radius: 6px;
+    overflow: hidden; /* Asegura que el border-radius se aplique a los bordes de la tabla */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Sombra sutil para la tabla */
+}
+
+thead th {
+    background-color: #e9ecef; /* Un gris ligeramente más oscuro para el encabezado */
+    color: #555;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee; /* Línea divisoria entre filas */
+    color: #444;
+}
+
+tbody tr:last-child td {
+    border-bottom: none; /* Eliminar borde de la última fila */
+}
+
+tbody tr:hover {
+    background-color: #f0f2f5; /* Color al pasar el mouse sobre la fila */
+}
+
+/* Estilos para los inputs dentro de la tabla */
+table input[type="text"],
+table input[type="email"] {
+    width: 100%; /* Ocupa todo el ancho de la celda */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 0.95em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+table input[type="text"]:focus,
+table input[type="email"]:focus {
+    border-color: #3498db; /* Azul para el foco en los campos de la tabla */
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+}
+
+
+/* Estilo para el botón de envío */
+button[type="submit"] {
+    background-color: #3498db; /* Azul consistente con tus botones */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 30px;
+    display: block; /* Para que ocupe su propia línea */
+    width: 100%;
+    max-width: 300px; /* Limita el ancho del botón */
+    margin-left: auto; /* Centrar el botón */
+    margin-right: auto;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9; /* Tono más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Pequeño efecto 3D */
+}
+
+/* Estilo para el token CSRF (normalmente invisible) */
+input[name="csrfmiddlewaretoken"] {
+    display: none; /* Ocultar el input del token CSRF */
+}

@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Reportería</title>
     <link rel="stylesheet" href="{% static 'css/MainPage.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
 <body>
-    {% include 'navbar.html' %}
+    <aside class="sidebar">
+        <div class="logo">Reporteria❤️</div>
+        {% include 'navbar.html' %}
+    </aside>
+
     <main class="content">
         <header class="header">
-            <h1>Reportes</h1>
-            <!--<button onclick="window.location.href='/desc_pdf_usu'" >Descarga PDF</button>
-            <button onclick="window.location.href='/'">Descarga PDF del s3</button>--> 
-            <button onclick="window.location.href='/editar_pdf'">Editar pdf</button>         
+            <h1>Reportes</h1>    
         </header>
         <section class="dashboard">
             <div class="card monetization">
@@ -26,7 +29,7 @@
                     <div class="metric-value">$123,965.26</div>
                     <div class="metric-change">+42.2%</div>
                     <div class="chart">
-                        <img src="ruta/a/tu/grafico-monetizacion.png" alt="Gráfico de Monetización">
+                        <canvas id="monetizationChartCanvas"></canvas> 
                     </div>
                     <div class="table-summary">
                         <table>
@@ -56,7 +59,7 @@
                     <div class="metric-value">334,987</div>
                     <div class="metric-change">+3.9%</div>
                     <div class="chart">
-                        <img src="ruta/a/tu/grafico-engagement.png" alt="Gráfico de Engagement">
+                        <canvas id="engagementChartCanvas"></canvas>
                     </div>
                     <div class="table-summary">
                         <table>
@@ -69,7 +72,7 @@
                             <tbody>
                                 <tr><td>19 ejemplos de promoci...</td><td class="right">12,547</td></tr>
                                 <tr><td>Porter Connectors User...</td><td class="right">2,019</td></tr>
-                                </tbody>
+                            </tbody>
                         </table>
                         <div class="pagination">1-100 / 409 <button>&lt;</button> <button>&gt;</button></div>
                     </div>
@@ -85,7 +88,7 @@
                     <div class="metric-value">62,708</div>
                     <div class="metric-change">+4.2%</div>
                     <div class="chart">
-                        <img src="ruta/a/tu/grafico-acquisition.png" alt="Gráfico de Adquisición">
+                        <canvas id="acquisitionChartCanvas"></canvas>
                     </div>
                     <div class="table-summary">
                         <table>
@@ -98,31 +101,14 @@
                             <tbody>
                                 <tr><td>(direct)</td><td class="right">61,311</td></tr>
                                 <tr><td>google</td><td class="right">694</td></tr>
-                                </tbody>
+                            </tbody>
                         </table>
                         <div class="pagination">1-6 / 6 <button>&lt;</button> <button>&gt;</button></div>
                     </div>
                 </div>
             </div>
-
-            <div class="card audience">
-                <div class="card-header">
-                    <h3>Audience</h3>
-                </div>
-                <div class="card-body audience-charts">
-                    <div class="geo-chart">
-                        <img src="ruta/a/tu/mapa.png" alt="Mapa de Audiencia">
-                        <div class="value">114,961.76</div>
-                    </div>
-                    <div class="demographics-chart">
-                        <img src="ruta/a/tu/demografia.png" alt="Demografía de Audiencia">
-                    </div>
-                    <div class="tech-chart">
-                        <img src="ruta/a/tu/tecnologia.png" alt="Tecnología de Audiencia">
-                    </div>
-                </div>
-            </div>
         </section>
     </main>
+    <script src="{% static 'js/mainPageCharts.js' %}"></script>
 </body>
 </html>
