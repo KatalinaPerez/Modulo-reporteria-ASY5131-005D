@@ -1,0 +1,31 @@
+[
+    {
+        "id": 1,
+        "sku": "2024-06-11",
+        "name": "Hola",
+        "description": "Factura 001",
+        "price": 19.990,
+        "cost": 19.990,
+        "createdAt": "2024-06-11T10:00:00Z",
+        "category": {
+            "id": 1,
+            "name": "limpieza",
+            "description": "Bla bla bla"
+            }
+    },
+    {
+        "id": 2,
+        "sku": "2024-06-11",
+        "name": "Adios",
+        "description": "Factura 002",
+        "price": 500,
+        "cost": 500,
+        "createdAt": "2024-06-11T10:00:00Z",
+        "category": {
+            "id": 1,
+            "name": "game",
+            "description": "Bla bla bla"
+            }
+            
+    }
+]

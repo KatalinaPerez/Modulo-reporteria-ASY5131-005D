@@ -35,10 +35,10 @@ def generar_reporte_cont(contabilidad):
     for cont in contabilidad:
         # variable = str/cont (segun el tipo de dato que sea).get("nom igual a la bd", "valor por defecto si no existe")
         idAsiento = cont.get("idAsiento", "")[:30]
-        fechaAsiento = cont.get("fechaAsiento", {})
-        descripcionAs = str(cont.get("descripcionAsiento", ""))
-        referenciaAs = str(cont.get("referenciasAsiento", ""))
-
+        fechaAsiento = str(cont.get("fechaAsiento", {}))
+        descripcionAs = cont.get("descripcionAsiento", "")
+        referenciaAs = cont.get("referenciasAsiento", "")
+        
         pdf.cell(60, 10, idAsiento, 1, 0, "L")
         pdf.cell(40, 10, fechaAsiento, 1, 0, "L")
         pdf.cell(40, 10, descripcionAs, 1, 0, "L")
@@ -50,7 +50,6 @@ def generar_reporte_cont(contabilidad):
 
 def generar_reporte_stock(stock):
     print("🟣 Iniciando generación del PDF de Stock")
-
     # PDF personalizado
     class PDF(FPDF):
         def header(self):
@@ -71,19 +70,29 @@ def generar_reporte_stock(stock):
 
     # Tabla
     pdf.set_font("Arial", "B", 10)
-    pdf.cell(60, 10, "ID Pedido", 1, 0, "C")
-    pdf.cell(40, 10, "Nombre del Cliente", 1, 0, "C")
-    pdf.cell(40, 10, "Items", 1, 0, "C")
+    pdf.cell(60, 10, "ID stock", 1, 0, "C")
+    pdf.cell(40, 10, "Sku", 1, 0, "C")
+    pdf.cell(40, 10, "Nombre", 1, 0, "C")
     pdf.cell(40, 10, "Bodega", 1, 1, "C")
+
+    '''id_st
+ sku
+nombre
+descripcion
+precio
+costo
+creacion
+id_categoria
+nombre_categoria
+descripcion_categoria'''
 
     pdf.set_font("Arial", "", 10)
     # aqui llaman a los datos tal cual salen en las bd de cada equipo.
     for st in stock:
-        # variable = str/cont (segun el tipo de dato que sea).get("nom igual a la bd", "valor por defecto si no existe")
         id_st = st.get("id", "")[:30]
-        sku = st.get("sku", {})
-        nombre = st.get("name", {})
-        descripcion = st.get("description", {})
+        sku = st.get("sku", "")
+        nombre = st.get("name", "")
+        descripcion = st.get("description", "")
         precio = str(st.get("price", ""))
         costo = str(st.get("cost", ""))
         creacion = str(st.get("createdAt", ""))

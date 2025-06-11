@@ -46,6 +46,9 @@ def Proveedores(request):
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
 
+def Despacho(request):
+    return render(request, 'Despacho.html')
+
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):

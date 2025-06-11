@@ -1,11 +1,13 @@
 import requests
+import json
+import os
 #vienen de apis de internet
 BASE_URL_PRODUCTOS = "https://fakestoreapi.com/products"
 BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
 
 #Apis de nuestro curso
-BASE_URL_STOCK = "aun no la pasan, pero sabemos la structura"
-BASE_URL_CONTABILIDAD = "http://34.225.192.85:8000/api/schema/swagger-ui/#/"
+BASE_URL_STOCK = "https://integracionstock-etefhkhbcadegaej.brazilsouth-01.azurewebsites.net/products"
+BASE_URL_CONTABILIDAD = "http://34.225.192.85:8000/api/asientoscontables/"
 BASE_URL_ADQUISICIONES = "http://35.153.174.128/api/compras/"
 BASE_URL_VENTAS = "http://34.238.247.153:8000/api/"
 BASE_URL_PROVEEDORES = " http://34.194.212.252/docs/"
@@ -30,21 +32,41 @@ def obtener_productos():
         return [] 
 
 def obtener_stock():
-    try:
+    '''try:
         response = requests.get(BASE_URL_STOCK)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener stock: {e}")
+        return []'''
+    try:   
+        base_dir = os.path.dirname(os.path.abspath(__file__))  #carpeta actual: templates/utils
+        file_path = os.path.join(base_dir, 'js', 'stock_datos_mock.json')  # bajando a la carpeta js
+
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f"Error al leer el archivo mock: {e}")
         return []
 
 def obtener_contabilidad():
-    try:
+    '''try:
         response = requests.get(BASE_URL_CONTABILIDAD)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener contabilidad: {e}")
+        return []'''
+    try:   
+        base_dir = os.path.dirname(os.path.abspath(__file__))  #carpeta actual: templates/utils
+        file_path = os.path.join(base_dir, 'js', 'cont_datos_mock.json')  # bajando a la carpeta js
+
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f"Error al leer el archivo mock: {e}")
         return []
     
 def obtener_adquisiciones():
