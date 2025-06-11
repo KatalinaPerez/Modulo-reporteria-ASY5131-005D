@@ -46,6 +46,9 @@ def Proveedores(request):
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
 
+def Despacho(request):
+    return render(request, 'Despacho.html')
+
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):
@@ -228,6 +231,12 @@ def api_descargar_pdf_s3(request, tipo):
 @permission_required('stock.view_stock', raise_exception=True) 
 def stock_view(request):
     return render(request, 'stock/stock.html')
+
+'''
+Para validar las paginas en cada api, debo hacer una condición que valida el usuario logueado
+para ello, llamo la info de seguridad, llamo el nombre y el correo del usuario logueado
+y lo paso a una condicion, todo esto dentro de un jingja
+'''
 
 '''def desc_s3(request, tipo):
     print("TIPO RECIBIDO:", tipo)

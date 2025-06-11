@@ -12,6 +12,7 @@ urlpatterns = [
     path("contabilidad/", views.Contabilidad, name="Contabilidad"),
     path("proveedores/", views.Proveedores, name="Proveedores"),
     path("adquisiciones/", views.Adquisiciones, name="Adquisiciones"),
+    path("despacho/", views.Despacho, name="Despacho"),
     
     path('api/pdf/<str:tipo>/',views.api_descargar_pdf_s3, name='api_descargar_pdf_s3'),
     path("desc_pdf_usu/", views.desc_pdf_usu, name="des_pdf_usu"),
