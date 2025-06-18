@@ -25,10 +25,30 @@ def MainPage(request):
     return render(request, 'MainPage.html')
 
 def Seguridad(request):
-    return render(request, 'Seguridad.html')
+    try:
+        response = requests.get('https://jsonplaceholder.typicode.com/users')
+        response.raise_for_status()
+
+        usuarios = response.json()
+    except requests.RequestException as e:
+        print(f"❌ Error al obtener usuarios: {e}")
+        usuarios = []
+    return render(request, 'Seguridad.html', {"usuarios": usuarios})
+
+def Despacho(request):
+    return render(request,"Despacho.html")
 
 def Stock(request):
-    return render(request, 'Stock.html')
+    try:
+        response = requests.get('https://integracionstock-etefhkhbcadegaej.brazilsouth-01.azurewebsites.net/products')
+        response.raise_for_status()
+
+        productos = response.json()
+
+    except requests.RequestException as e :
+        print(f"❌ Error al obtener productos: {e}")
+        productos = []
+    return render(request, 'Stock.html', {"productos": productos})
 
 def mostrar_usuarios(request):
     usuarios = obtener_usuarios()
@@ -38,7 +58,16 @@ def mostrar_usuarios(request):
     return render(request, "usuarios.html", {"usuarios": usuarios})
 
 def Contabilidad(request):
-    return render(request, 'Contabilidad.html')
+    try:
+        response = requests.get('http://34.225.192.85:8000/api/asientoscontables/')
+        response.raise_for_status()
+
+        cuentas = response.json()
+
+    except requests.RequestException as e :
+        print (f"❌ Error al obtener cuentas: {e}")
+        cuentas = []
+    return render(request, 'Contabilidad.html', {"cuentas": cuentas})
 
 def Proveedores(request):
     return render (request, 'Proveedores.html')
@@ -46,6 +75,219 @@ def Proveedores(request):
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
 
+#::::::: Editar Pdf :::::::::::
+
+def editar_pdf_contabilidad(request):
+    # Obtener datos de usuarios desde API externa
+    cuentas = requests.get('http://34.225.192.85:8000/api/asientoscontables/').json()
+    
+    if request.method == 'POST':
+        # Crear instancia de PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+
+        # 1. Título y fecha
+        pdf.cell(0, 10, "Reporte de Stock - ASY5131-005D", 0, 1, 'C')
+        pdf.cell(0, 10, f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", 0, 1)
+        pdf.ln(5)
+
+        # 2. Datos del formulario
+        encargado = request.POST.get('encargado', 'No especificado')
+        area = request.POST.get("area", "No especificada")
+        descripcion = request.POST.get('descripcion', 'Sin descripción')
+
+        pdf.cell(0, 10, f"Encargado: {encargado}", 0, 1)
+        pdf.cell(0, 20, f"Área: {area}", 0, 1)
+        pdf.multi_cell(0, 10, f"Descripción: {descripcion}")
+        pdf.ln(10)
+
+        # 3. Tabla de productos
+        pdf.cell(30, 10, "idCuenta", 1)
+        pdf.cell(80, 10, "nombreCuenta", 1)
+        pdf.cell(80, 10, "tipoCuenta", 1)
+        pdf.cell(80, 10, "codigoCuenta", 1)
+        pdf.cell(50, 10, "descripcionCuenta", 1, ln=1)
+        
+
+        for cuenta in cuentas:
+            idCuenta = request.POST.get(f'id_{cuenta["id"]}', cuenta['idCuenta'])
+            nombreCuenta = request.POST.get(f'sku_{cuenta["id"]}', cuenta['nombreCuenta'])
+            tipoCuenta = request.POST.get(f'nombre_{cuenta["id"]}', cuenta['tipoCuenta'])
+            codigoCuenta = request.POST.get(f'descripcion_{cuenta["id"]}', cuenta['codigoCuenta'])
+            descripcionCuenta = request.POST.get(f'precio_{cuenta["id"]}', cuenta['descripcionCuenta'])
+            
+
+            pdf.cell(60, 10, idCuenta, 1)
+            pdf.cell(80, 10, nombreCuenta, 1)
+            pdf.cell(80, 10, tipoCuenta, 1)
+            pdf.cell(80, 10, codigoCuenta, 1)
+            pdf.cell(50, 10, descripcionCuenta, 1, ln=1)
+
+        # Generar bytes del PDF
+        pdf_bytes = pdf.output(dest='S').encode('latin1')
+
+        # Subida a S3
+        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        nombre_archivo = f"reporte_stock_{fecha_actual}.pdf"
+        s3_key = f"reportes/{fecha_actual}/{nombre_archivo}"
+
+        upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+
+        if not upload_success:
+            return HttpResponse("❌ Error al subir a S3", status=500)
+
+        # Respuesta de descarga
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+        return response
+
+    
+    # Mostrar formulario de edición
+    return render(request, 'editar_pdf_stock.html', {'cuentas': cuentas})
+
+
+def editar_pdf_stock(request):
+    # Obtener datos de usuarios desde API externa
+    productos = requests.get('https://integracionstock-etefhkhbcadegaej.brazilsouth-01.azurewebsites.net/products').json()
+    
+    if request.method == 'POST':
+        # Crear instancia de PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+
+        # 1. Título y fecha
+        pdf.cell(0, 10, "Reporte de Stock - ASY5131-005D", 0, 1, 'C')
+        pdf.cell(0, 10, f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", 0, 1)
+        pdf.ln(5)
+
+        # 2. Datos del formulario
+        encargado = request.POST.get('encargado', 'No especificado')
+        area = request.POST.get("area", "No especificada")
+        descripcion = request.POST.get('descripcion', 'Sin descripción')
+
+        pdf.cell(0, 10, f"Encargado: {encargado}", 0, 1)
+        pdf.cell(0, 20, f"Área: {area}", 0, 1)
+        pdf.multi_cell(0, 10, f"Descripción: {descripcion}")
+        pdf.ln(10)
+
+        # 3. Tabla de productos
+        pdf.cell(30, 10, "id", 1)
+        pdf.cell(80, 10, "sku", 1)
+        pdf.cell(80, 10, "Nombre", 1)
+        pdf.cell(80, 10, "descripcion", 1)
+        pdf.cell(50, 10, "Precio", 1)
+        pdf.cell(50, 10, "costo", 1, ln=1)
+
+        for producto in productos:
+            id = request.POST.get(f'id_{producto["id"]}', producto['id'])
+            sku = request.POST.get(f'sku_{producto["id"]}', producto['sku'])
+            nombre = request.POST.get(f'nombre_{producto["id"]}', producto['name'])
+            descripcion = request.POST.get(f'descripcion_{producto["id"]}', producto['description'])
+            precio = request.POST.get(f'precio_{producto["id"]}', producto['price'])
+            costo = request.POST.get(f'costo_{producto["id"]}', producto['cost'])
+
+            pdf.cell(60, 10, id, 1)
+            pdf.cell(80, 10, sku, 1)
+            pdf.cell(80, 10, nombre, 1)
+            pdf.cell(80, 10, descripcion, 1)
+            pdf.cell(50, 10, precio, 1)
+            pdf.cell(50, 10, costo, 1, ln=1)
+
+
+        # Generar bytes del PDF
+        pdf_bytes = pdf.output(dest='S').encode('latin1')
+
+        # Subida a S3
+        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        nombre_archivo = f"reporte_stock_{fecha_actual}.pdf"
+        s3_key = f"reportes/{fecha_actual}/{nombre_archivo}"
+
+        upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+
+        if not upload_success:
+            return HttpResponse("❌ Error al subir a S3", status=500)
+
+        # Respuesta de descarga
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+        return response
+
+    
+    # Mostrar formulario de edición
+    return render(request, 'editar_pdf_stock.html', {'productos': productos})
+
+def editar_pdf(request):
+    # Obtener datos de usuarios desde API externa
+    usuarios = requests.get('https://jsonplaceholder.typicode.com/users').json()
+    
+    if request.method == 'POST':
+        # Crear instancia de PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+
+        # 1. Título y fecha
+        pdf.cell(0, 10, "Reporte de Usuarios - ASY5131-005D", 0, 1, 'C')
+        pdf.cell(0, 10, f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", 0, 1)
+        pdf.ln(5)
+
+        # 2. Datos del formulario
+        encargado = request.POST.get('encargado', 'No especificado')
+        area = request.POST.get("area", "No especificada")
+        descripcion = request.POST.get('descripcion', 'Sin descripción')
+
+        pdf.cell(0, 10, f"Encargado: {encargado}", 0, 1)
+        pdf.cell(0, 20, f"Área: {area}", 0, 1)
+        pdf.multi_cell(0, 10, f"Descripción: {descripcion}")
+        pdf.ln(10)
+
+        # 3. Tabla de usuarios
+        pdf.cell(60, 10, "Nombre", 1)
+        pdf.cell(60, 10, "username", 1)
+        pdf.cell(80, 10, "Email", 1)
+        pdf.cell(80, 10, "calle", 1)
+        pdf.cell(50, 10, "Ciudad", 1, ln=1)
+
+        for usuario in usuarios:
+            nombre = request.POST.get(f'nombre_{usuario["id"]}', usuario['name'])
+            usuario = request.POST.get(f'usuario_{usuario["id"]}', usuario['username'])
+            email = request.POST.get(f'email_{usuario["id"]}', usuario['email'])
+            calle = request.POST.get(f'calle_{usuario["id"]}', usuario['address']['street'])
+            ciudad = request.POST.get(f'ciudad_{usuario["id"]}', usuario['address']['city'])
+
+            pdf.cell(60, 10, nombre, 1)
+            pdf.cell(60, 10, usuario, 1)
+            pdf.cell(80, 10, email, 1)
+            pdf.cell(80, 10, calle, 1)
+            pdf.cell(50, 10, ciudad, 1, ln=1)
+
+        # Generar bytes del PDF
+        pdf_bytes = pdf.output(dest='S').encode('latin1')
+
+        # Subida a S3
+        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        nombre_archivo = f"reporte_usuarios_{fecha_actual}.pdf"
+        s3_key = f"reportes/{fecha_actual}/{nombre_archivo}"
+
+        upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+
+        if not upload_success:
+            return HttpResponse("❌ Error al subir a S3", status=500)
+
+        # Respuesta de descarga
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+        return response
+
+    
+    # Mostrar formulario de edición
+    return render(request, 'editar_pdf.html', {'usuarios': usuarios})
+
+
+    # Si es GET, mostrar formulario
+    return render(request, 'editar_pdf.html', {'usuarios': usuarios})
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):
@@ -90,70 +332,6 @@ def desc_pdf_contabilidad(request):
     response['Content-Disposition'] = 'attachment; filename="reporte_contabilidad.pdf"'
     return response
 
-def editar_pdf(request):
-    # Obtener datos de usuarios desde API externa
-    usuarios = requests.get('https://jsonplaceholder.typicode.com/users').json()
-    
-    if request.method == 'POST':
-        # Crear instancia de PDF
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-
-        # 1. Título y fecha
-        pdf.cell(0, 10, "Reporte de Usuarios - ASY5131-005D", 0, 1, 'C')
-        pdf.cell(0, 10, f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", 0, 1)
-        pdf.ln(5)
-
-        # 2. Datos del formulario
-        encargado = request.POST.get('encargado', 'No especificado')
-        area = request.POST.get("area", "No especificada")
-        descripcion = request.POST.get('descripcion', 'Sin descripción')
-
-        pdf.cell(0, 10, f"Encargado: {encargado}", 0, 1)
-        pdf.cell(0, 20, f"Área: {area}", 0, 1)
-        pdf.multi_cell(0, 10, f"Descripción: {descripcion}")
-        pdf.ln(10)
-
-        # 3. Tabla de usuarios
-        pdf.cell(60, 10, "Nombre", 1)
-        pdf.cell(80, 10, "Email", 1)
-        pdf.cell(50, 10, "Ciudad", 1, ln=1)
-
-        for usuario in usuarios:
-            nombre = request.POST.get(f'nombre_{usuario["id"]}', usuario['name'])
-            email = request.POST.get(f'email_{usuario["id"]}', usuario['email'])
-            ciudad = request.POST.get(f'ciudad_{usuario["id"]}', usuario['address']['city'])
-
-            pdf.cell(60, 10, nombre, 1)
-            pdf.cell(80, 10, email, 1)
-            pdf.cell(50, 10, ciudad, 1, ln=1)
-
-        # Generar bytes del PDF
-        pdf_bytes = pdf.output(dest='S').encode('latin1')
-
-        # Subida a S3
-        fecha_actual = datetime.now().strftime("%Y-%m-%d")
-        nombre_archivo = f"reporte_usuarios_{fecha_actual}.pdf"
-        s3_key = f"reportes/{fecha_actual}/{nombre_archivo}"
-
-        upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
-
-        if not upload_success:
-            return HttpResponse("❌ Error al subir a S3", status=500)
-
-        # Respuesta de descarga
-        response = HttpResponse(pdf_bytes, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
-        return response
-
-    
-    # Mostrar formulario de edición
-    return render(request, 'editar_pdf.html', {'usuarios': usuarios})
-
-
-    # Si es GET, mostrar formulario
-    return render(request, 'editar_pdf.html', {'usuarios': usuarios})
 
 def api_descargar_pdf_s3(request, tipo):
     print("TIPO RECIBIDO:", tipo)

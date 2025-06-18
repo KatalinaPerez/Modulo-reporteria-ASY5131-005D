@@ -31,12 +31,22 @@
                         <thead>
                             <tr>
                                 <th>Nombre Completo</th>
+                                <th>usuario</th>
                                 <th>Email</th>
                                 <th>Dirección</th>
                                 <th>Ciudad</th>
                             </tr>
                         </thead>
                         <tbody id="security-users">
+                            {% for usuario in usuarios %}
+                            <tr>
+                                <th>{{ usuario.name }}</th>
+                                <th>{{ usuario.username }}</th>
+                                <th>{{ usuario.email }}</th>
+                                <th>{{ usuario.address.street }}</th>
+                                <th>{{ usuario.address.city }}</th>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                     <div class="pagination">

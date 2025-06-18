@@ -25,25 +25,27 @@
             <textarea id="descripcion" name="descripcion" required></textarea>
         </div>
         
-        <h2>Datos de Usuarios</h2>
+        <h2>Datos de Stock</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Nombre</th>t
-                    <th>Usuario</th>
-                    <th>Email</th>
-                    <th>Calle</th>
-                    <th>Ciudad</th>
+                    <th>id</th>
+                    <th>sku</th>
+                    <th>nombre</th>
+                    <th>descripcion</th>
+                    <th>precio</th>
+                    <th>costo</th>
                 </tr>
             </thead>
             <tbody>
-                {% for usuario in usuarios %}
+                {% for producto in productos %}
                 <tr>
-                    <td><input type="text" name="nombre_{{ usuario.id }}" value="{{ usuario.name }}"></td>
-                    <td><input type="text" name="usuario_{{ usuario.id }}" value="{{ usuario.username }}"></td>
-                    <td><input type="email" name="email_{{ usuario.id }}" value="{{ usuario.email }}"></td>
-                    <td><input type="text" name="calle_{{ usuario.id }}" value="{{ usuario.address.street }}"></td>
-                    <td><input type="text" name="ciudad_{{ usuario.id }}" value="{{ usuario.address.city }}"></td>
+                    <td><input type="text" name="{{ producto.id }}" value="{{ producto.id }}"></td>
+                    <td><input type="text" name="{{ producto.sku }}" value="{{ producto.sku }}"></td>
+                    <td><input type="text" name="{{ producto.title }}" value="{{ producto.name }}"></td>
+                    <td><input type="text" name="{{ producto.description }}" value="{{ producto.description }}"></td>
+                    <td><input type="text" name="{{ producto.price }}" value="{{ producto.price }}"></td>
+                    <td><input type="text" name="{{ producto.cost }}" value="{{ producto.cost }}"></td>
                 </tr>
                 {% endfor %}
             </tbody>

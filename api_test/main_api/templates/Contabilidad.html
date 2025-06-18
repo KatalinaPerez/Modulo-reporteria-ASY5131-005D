@@ -14,47 +14,60 @@
     </aside>
     <main class="content">
         <header class="header">
-            <h1>Reporte Seguridad</h1>
+            <h1>Reporte Contabilidad</h1>
             <div class="date-range">Fecha</div>
+            <button class="connect-data-button" onclick="window.location.href='/editar_pdf_contabilidad'">Editar pdf</button>
             <button class="connect-data-button" onclick="window.location.href='/desc_pdf_contabilidad'" >Descarga PDF</button>
             <button class="connect-data-button" onclick="window.location.href='/descargar/contabilidad/'" >Descarga PDF de s3</button>
         </header>
         <section class="dashboard">
             <div class="card security">
                 <div class="card-header">
-                    <h3>Usuarios de Seguridad (Simulado)</h3>
+                    <h3>Cuentas Contabilidad</h3>
                     <button class="export-button"><span></span></button>
                 </div>
                 <div class="card-body table-summary">
                     <table>
                         <thead>
                             <tr>
-                                <th>Nombre Completo</th>
-                                <th>Email</th>
-                                <th>Dirección</th>
-                                <th>Ciudad</th>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Codigo Cuenta</th>
+                                <th>Descripcion</th>
                             </tr>
                         </thead>
                         <tbody id="security-users">
+                            {% for cuenta in cuentas %}
+                                <tr>
+                                    <th>{{ cuenta.idCuenta }}</th>
+                                    <th>{{ cuenta.nombreCuenta }}</th>
+                                    <th>{{ cuenta.tipoCuenta }}</th>
+                                    <th>{{ cuenta.codigoCuenta }}</th>
+                                    <th>{{ cuenta.descripcionCuenta }}</th>
+                                </tr>
+                                {% endfor %}
                         </tbody>
                     </table>
                     <div class="pagination">
                         <span>Filtrar por:</span>
                         <select id="filter-column">
-                            <option value="name">Nombre Completo</option>
-                            <option value="email">Email</option>
-                            <option value="address">Dirección</option>
-                            <option value="city">Ciudad</option>
+                            <option value="idCuenta">Id</option>
+                            <option value="nombreCuenta">Nombre</option>
+                            <option value="tipoCuenta">Tipo cuenta</option>
+                            <option value="codigoCuenta">Codigo cuenta</option>
+                            <option value="descripcionCuenta">Descripcion</option>
                         </select>
                         <input type="text" id="filter-value" placeholder="Término de búsqueda">
                         <button id="apply-filter">Filtrar</button>
 
                         <span>Ordenar por:</span>
                         <select id="sort-column">
-                            <option value="name">Nombre Completo</option>
-                            <option value="email">Email</option>
-                            <option value="address">Dirección</option>
-                            <option value="city">Ciudad</option>
+                            <option value="idCuenta">Id</option>
+                            <option value="nombreCuenta">Nombre</option>
+                            <option value="tipoCuenta">Tipo cuenta</option>
+                            <option value="codigoCuenta">Codigo cuenta</option>
+                            <option value="descripcionCuenta">Descripcion</option>
                         </select>
                         <select id="sort-order">
                             <option value="asc">Ascendente</option>

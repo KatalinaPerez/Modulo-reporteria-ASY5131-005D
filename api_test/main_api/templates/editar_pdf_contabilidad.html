@@ -25,19 +25,19 @@
             <textarea id="descripcion" name="descripcion" required></textarea>
         </div>
         
-        <h2>Datos de Usuarios</h2>
+        <h2>Datos de Cuentas</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Nombre</th>t
-                    <th>Usuario</th>
-                    <th>Email</th>
-                    <th>Calle</th>
-                    <th>Ciudad</th>
+                    <th>Id</th>t
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Codigo Cuenta</th>
+                    <th>Descripción</th>
                 </tr>
             </thead>
             <tbody>
-                {% for usuario in usuarios %}
+                {% for cuenta in cuentas %}
                 <tr>
                     <td><input type="text" name="nombre_{{ usuario.id }}" value="{{ usuario.name }}"></td>
                     <td><input type="text" name="usuario_{{ usuario.id }}" value="{{ usuario.username }}"></td>
