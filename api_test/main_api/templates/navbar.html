@@ -1,19 +1,33 @@
-<aside class="sidebar">
-    <div class="logo">Reporteria❤️</div>
-    <nav class="menu">
-        <a href="{% url 'MainPage' %}" 
-           class="{% if request.resolver_match.url_name == 'MainPage' %}active{% endif %}">
-            <span class="icon">📊</span><span>Ventas</span> </a>
-        <a href="{%url 'Proveedores' %}"><span class="icon">📈</span><span>Proveedores</span></a>
-        <a href="{%url 'Contabilidad' %}"><span class="icon">📈</span><span>Contabilidad</span></a>
-        <a href="{%url 'Despacho' %}"><span class="icon">📈</span><span>Despacho</span></a>
-        <a href="{% url 'Adquisiciones' %}"><span class="icon">📈</span><span>Adquisiciones</span></a>
-        <a href="{% url 'Stock' %}" 
-           class="{% if request.resolver_match.url_name == 'Stock' %}active{% endif %}">
-            <span class="icon">📈</span><span>Stock</span> </a>
-        <a href="{% url 'Seguridad' %}" 
-           class="{% if request.resolver_match.url_name == 'Seguridad' %}active{% endif %}">
-            <span class="icon">📈</span><span>Seguridad</span> </a>
-        <a href="#"><span class="icon">👥</span><span>Ayuda</span></a>
-    </nav>
-</aside>
+<nav class="menu">
+    <a href="{% url 'MainPage' %}"
+       class="{% if request.resolver_match.url_name == 'MainPage' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-chart-bar"></i></span><span>Ventas</span>
+    </a>
+    <a href="{% url 'Proveedores' %}"
+       class="{% if request.resolver_match.url_name == 'Proveedores' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-truck"></i></span><span>Proveedores</span>
+    </a>
+    <a href="{% url 'Contabilidad' %}"
+       class="{% if request.resolver_match.url_name == 'Contabilidad' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-calculator"></i></span><span>Contabilidad</span>
+    </a>
+    <a href="{% url 'Despacho' %}"
+       class="{% if request.resolver_match.url_name == 'Despacho' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-truck-fast"></i></span><span>Despacho</span>
+    </a>
+    <a href="{% url 'Adquisiciones' %}"
+       class="{% if request.resolver_match.url_name == 'Adquisiciones' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-cart-shopping"></i></span><span>Adquisiciones</span>
+    </a>
+    <a href="{% url 'Stock' %}"
+       class="{% if request.resolver_match.url_name == 'Stock' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-boxes-stacked"></i></span><span>Stock</span>
+    </a>
+    <a href="{% url 'Seguridad' %}"
+       class="{% if request.resolver_match.url_name == 'Seguridad' %}active{% endif %}">
+        <span class="icon"><i class="fas fa-shield-alt"></i></span><span>Seguridad</span>
+    </a>
+    <a href="#">
+        <span class="icon"><i class="fas fa-circle-question"></i></span><span>Ayuda</span>
+    </a>
+</nav>
