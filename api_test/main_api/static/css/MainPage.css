@@ -1,9 +1,16 @@
+/* Restablecimientos básicos y configuración de altura */
+html {
+    height: 100%; /* Asegura que el elemento html ocupe toda la altura de la ventana */
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
     display: flex;
     background-color: #f4f6f8;
     color: #333;
+    height: 100%; /* El body también debe ocupar el 100% de la altura del html */
+    overflow: hidden; /* Evita que el scroll general de la página aparezca, el scroll se controlará en .content */
 }
 
 .sidebar {
@@ -14,6 +21,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    /* Si quieres que el sidebar ocupe toda la altura, puedes añadir: */
+    height: 100vh; /* O 100% si el body ya tiene 100vh y no hay otros elementos que afecten su cálculo */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho/alto total */
 }
 
 .logo {
@@ -47,9 +57,12 @@ body {
 }
 
 .community {
-    margin-top: auto;
+    margin-top: auto; /* Empuja este elemento al final del sidebar */
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%; /* Asegura que ocupe todo el ancho disponible en el sidebar */
+    box-sizing: border-box; /* Incluye padding en el ancho total */
+    text-align: center; /* Centra el contenido de community si es necesario */
 }
 
 .community img {
@@ -59,9 +72,14 @@ body {
     margin: 10px auto 0;
 }
 
+/* Contenido principal - CRUCIAL PARA LA ALTURA */
 .content {
-    flex-grow: 1;
+    flex-grow: 1; /* Permite que el contenido principal ocupe todo el espacio restante horizontalmente */
     padding: 20px;
+    display: flex; /* Habilita flexbox para organizar header y dashboard verticalmente */
+    flex-direction: column; /* Organiza los elementos hijos en una columna */
+    overflow-y: auto; /* **Permite el scroll solo en el contenido si el contenido excede la altura** */
+    box-sizing: border-box; /* Incluye padding en el ancho/alto total */
 }
 
 .header {
@@ -69,6 +87,9 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    /* Ajusta si necesitas padding inferior o un borde para el header */
+    padding-bottom: 10px; /* Ejemplo de padding inferior */
+    border-bottom: 1px solid #e0e0e0; /* Ejemplo de línea divisoria */
 }
 
 .header h1 {
@@ -95,10 +116,14 @@ body {
     background-color: #2980b9;
 }
 
+/* Dashboard - CRUCIAL PARA LA ALTURA DENTRO DEL CONTENIDO */
 .dashboard {
+    flex-grow: 1; /* Permite que el dashboard ocupe todo el espacio restante verticalmente dentro de .content */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    /* Alinea el contenido de la cuadrícula al inicio si hay espacio extra (para evitar que se estiren las filas) */
+    align-content: start; 
 }
 
 .card {
@@ -108,6 +133,8 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    /* Establece una altura mínima para las tarjetas, o déjala fluir si el contenido es muy variable */
+    min-height: 300px; /* Ajusta según sea necesario para que el gráfico tenga espacio */
 }
 
 .card-header {
@@ -130,17 +157,29 @@ body {
     border: none;
     cursor: pointer;
     padding: 5px;
-    /* Estilo del icono de exportación (puedes usar un SVG o un pseudo-elemento) */
     width: 20px;
     height: 20px;
-    background-image: url('ruta/a/tu/icono-exportar.png'); /* Reemplaza con tu icono */
-    background-size: cover;
+    /* Si estás usando Font Awesome, puedes usar: */
+    /* font-family: 'Font Awesome 6 Free'; font-weight: 900; content: '\f019'; */
+    /* O si es imagen, asegúrate que la ruta sea correcta */
+    /* background-image: url('{% static "img/export-icon.png" %}'); */
+    /* background-size: cover; */
 }
+
+/* Si usas Font Awesome para el botón de exportar: */
+.export-button::before {
+    content: '\f019'; /* Icono de descarga */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: #888; /* Color del icono */
+}
+
 
 .card-body {
     padding: 15px;
     display: flex;
     flex-direction: column;
+    flex-grow: 1; /* Permite que el cuerpo de la tarjeta se expanda */
 }
 
 .metric-value {
@@ -161,14 +200,26 @@ body {
 }
 
 .chart {
-    /* Espacio para el gráfico */
+    /* **Importante: Define una altura para el contenedor del gráfico** */
+    position: relative; /* Para que Chart.js pueda posicionar elementos internos */
+    height: 180px; /* Ajusta esta altura según lo que necesites para tus gráficos */
     margin-bottom: 15px;
-    text-align: center; /* Centrar la imagen del gráfico simulado */
+    display: flex; /* Para centrar el canvas si fuera necesario */
+    justify-content: center;
+    align-items: center;
 }
 
+/* Si todavía tienes img dentro de .chart (aunque deberías usar canvas para Chart.js) */
 .chart img {
     max-width: 100%;
-    height: auto;
+    height: 100%; /* Asegura que la imagen ocupe la altura del contenedor */
+    object-fit: contain; /* Para que la imagen no se recorte si las proporciones no coinciden */
+}
+
+
+.table-summary {
+    flex-grow: 1; /* Permite que la tabla ocupe el espacio restante dentro de la tarjeta */
+    overflow-x: auto; /* Si la tabla es muy ancha, que tenga scroll horizontal */
 }
 
 .table-summary table {
@@ -193,16 +244,24 @@ body {
 
 .table-summary tbody tr:last-child td {
     border-bottom: none;
-    font-weight: bold;
+    /* Eliminar font-weight: bold; si el total ya tiene su propia fila con clase específica */
 }
 
+/* Asegura que la fila de "Grand total" tenga negrita si la creas con una clase */
+.table-summary tbody .grand-total-row td {
+    font-weight: bold;
+    border-top: 1px solid #ccc; /* Una línea para el total */
+}
+
+
 .pagination {
-    margin-top: 10px;
+    margin-top: auto; /* Empuja la paginación al final del card-body */
     color: #777;
     font-size: 0.8em;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    padding-top: 10px; /* Un poco de espacio antes de la paginación */
 }
 
 .pagination button {
@@ -223,19 +282,39 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
+    flex-grow: 1; /* Permite que este contenedor se expanda en el Audience Card */
+    align-items: center; /* Centra verticalmente los elementos en la cuadrícula */
+    justify-items: center; /* Centra horizontalmente los elementos en la cuadrícula */
 }
 
 .audience-charts > div {
     text-align: center;
+    position: relative; /* Para que el canvas se ajuste bien */
+    height: 150px; /* Altura para los sub-gráficos de audiencia */
+    width: 100%; /* Asegura que el div ocupe todo el ancho de su celda en la cuadrícula */
+    display: flex; /* Para organizar contenido dentro */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eee; /* Puedes añadir un borde para visualización */
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluye padding/border en el tamaño */
 }
 
-.audience-charts img {
+.audience-charts canvas {
     max-width: 100%;
-    height: auto;
+    height: 100%; /* Asegura que el canvas ocupe la altura del contenedor */
+}
+
+.audience-charts img { /* Solo si sigues usando img como fallback/placeholder */
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
     margin-bottom: 5px;
 }
 
 .audience-charts .value {
     font-size: 0.9em;
     color: #777;
+    margin-top: 5px; /* Espacio para el valor numérico */
 }
