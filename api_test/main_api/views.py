@@ -334,57 +334,8 @@ def api_descargar_pdf_s3(request, tipo):
 def stock_view(request):
     return render(request, 'stock/stock.html')
 
-<<<<<<< HEAD
 '''
 Para validar las paginas en cada api, debo hacer una condición que valida el usuario logueado
 para ello, llamo la info de seguridad, llamo el nombre y el correo del usuario logueado
 y lo paso a una condicion, todo esto dentro de un jingja
-'''
-
-=======
-# El comentario de desc_s3 que tenías lo dejo igual, asumí que lo tenías comentado por una razón.
->>>>>>> kata
-'''def desc_s3(request, tipo):
-    print("TIPO RECIBIDO:", tipo)
-    if tipo == "usuarios":
-        datos = obtener_usuarios()
-        generar_pdf = generar_reporte_usu
-        carpeta_s3 = "reportes"
-        nombre_base = "reporte_usuarios"
-    elif tipo == "productos":
-        datos = obtener_productos()
-        generar_pdf = generar_reporte_products
-        carpeta_s3 = "reportes_productos"
-        nombre_base = "reporte_productos"
-    elif tipo == "contabilidad":
-        datos = obtener_contabilidad()
-        generar_pdf = generar_reporte_cont
-        carpeta_s3 = "reportes_contabilidad"
-        nombre_base = "reporte_contabilidad"
-        
-    else:
-        return HttpResponse("❌ Tipo de reporte no válido", status=400)
-
-    if not datos:
-        return HttpResponse(f"Error al obtener datos de {tipo}", status=500)
-
-    try:
-        pdf_bytes = generar_pdf(datos)
-    except Exception as e:
-        return HttpResponse(f"Error generando el PDF de {tipo}: {e}", status=500)
-
-    fecha_actual = datetime.now().strftime("%Y-%m-%d")
-    nombre_archivo = f"{nombre_base}_{fecha_actual}.pdf"
-    s3_key = f"{carpeta_s3}/{fecha_actual}/{nombre_archivo}"
-
-    upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
-    if not upload_success:
-        return HttpResponse("Error al subir el PDF a S3", status=500)
-
-    download_path = os.path.join(os.path.expanduser("~"), "Downloads", nombre_archivo)
-    download_success = download_s3(BUCKET_NAME, s3_key, download_path)
-    if not download_success:
-        return HttpResponse("Error al descargar el PDF desde S3", status=500)
-
-    return HttpResponse(f"✅ PDF de {tipo} subido a S3 y descargado en: {download_path}", status=200)
 '''
