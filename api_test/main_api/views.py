@@ -48,8 +48,6 @@ def Proveedores(request):
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
 
-def Despacho(request):
-    return render(request, 'Despacho.html')
 # :::: Nuevas Vistas de API para Gráficos en MainPage ::::::
 
 def api_get_monetization_data(request):
@@ -275,6 +273,7 @@ def api_descargar_pdf_s3(request, tipo):
 
     elif tipo == "stock":
         datos = obtener_stock()
+        print("DATOS STOCK:", datos) 
         generar_pdf = generar_reporte_stock
         carpeta_s3 = "reportes_stock" # Añadido para consistencia
         nombre_base = "reporte_stock" # Añadido para consistencia

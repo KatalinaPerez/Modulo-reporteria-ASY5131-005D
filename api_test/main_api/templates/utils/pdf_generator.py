@@ -69,36 +69,42 @@ def generar_reporte_stock(stock):
     pdf.ln(10)
 
     # Tabla
-    pdf.set_font("Arial", "B", 10)
-    pdf.cell(60, 10, "ID stock", 1, 0, "C")
-    pdf.cell(40, 10, "Sku", 1, 0, "C")
-    pdf.cell(40, 10, "Nombre", 1, 0, "C")
-    pdf.cell(40, 10, "Bodega", 1, 1, "C")
+    #pdf.cell(20, 10, "ID", 1, 0, "C")
+    #pdf.cell(20, 10, "SKU", 1, 0, "C")
+    pdf.cell(30, 10, "Nombre", 1, 0, "C")
+    pdf.cell(30, 10, "Descripción", 1, 0, "C")
+    pdf.cell(20, 10, "Precio", 1, 0, "C")
+    pdf.cell(20, 10, "Costo", 1, 0, "C")
+    #pdf.cell(30, 10, "Creación", 1, 0, "C")
+    #pdf.cell(20, 10, "ID Cat", 1, 0, "C")
+    pdf.cell(30, 10, "Nombre Cat", 1, 0, "C")
+    pdf.cell(30, 10, "Desc Cat", 1, 1, "C")
 
     pdf.set_font("Arial", "", 10)
     # aqui llaman a los datos tal cual salen en las bd de cada equipo.
     for st in stock:
-        id_st = st.get("id", "")[:30]
-        sku = st.get("sku", "")
+        #id_st = st.get("id", "")[:30]
+        #sku = st.get("sku", "")
         nombre = st.get("name", "")
         descripcion = st.get("description", "")
         precio = str(st.get("price", ""))
         costo = str(st.get("cost", ""))
-        creacion = str(st.get("createdAt", ""))
-        id_categoria = str(st.get("category", {}).get("id", ""))
-        nombre_categoria = str(st.get("category", {}).get("name", ""))
-        descripcion_categoria = str(st.get("category", {}).get("description", ""))
+        #creacion = str(st.get("createdAt", ""))
+        #id_categoria = str(st.get("category", {}).get("id", ""))
+        categoria = st.get("category", {})
+        nombre_categoria = categoria.get("name", "")  # Extraer sólo el 'name' de category
+        descripcion_categoria = categoria.get("description", "")  # Extraer sólo el 'description' de category
 
-        pdf.cell(60, 10, id_st, 1, 0, "L")
-        pdf.cell(40, 10, sku, 1, 0, "L")
-        pdf.cell(40, 10, nombre, 1, 0, "L")
-        pdf.cell(40, 10, descripcion, 1, 1, "L")
-        pdf.cell(60, 10, precio, 1, 0, "L")
-        pdf.cell(40, 10, costo, 1, 0, "L")
-        pdf.cell(40, 10, creacion, 1, 0, "L")
-        pdf.cell(40, 10, id_categoria, 1, 0, "L")
-        pdf.cell(40, 10, nombre_categoria, 1, 0, "L")
-        pdf.cell(40, 10, descripcion_categoria, 1, 1, "L")
+        #pdf.cell(20, 10, id_st, 1, 0, "L")
+        #pdf.cell(20, 10, sku, 1, 0, "L")
+        pdf.cell(30, 10, nombre, 1, 0, "L")
+        pdf.cell(30, 10, descripcion, 1, 0, "L")
+        pdf.cell(20, 10, precio, 1, 0, "L")
+        pdf.cell(20, 10, costo, 1, 0, "L")
+        #pdf.cell(30, 10, creacion, 1, 0, "L")
+        #pdf.cell(20, 10, id_categoria, 1, 0, "L")
+        pdf.cell(30, 10, nombre_categoria, 1, 0, "L")
+        pdf.cell(30, 10, descripcion_categoria, 1, 1, "L")
 
     pdf_bytes = pdf.output(dest='S').encode('latin1')
     print("Tamaño del PDF generado:", len(pdf_bytes))

@@ -40,8 +40,9 @@ def obtener_stock():
         print(f"Error al obtener stock: {e}")
         return []'''
     try:   
-        base_dir = os.path.dirname(os.path.abspath(__file__))  #carpeta actual: templates/utils
-        file_path = os.path.join(base_dir, 'js', 'stock_datos_mock.json')  # bajando a la carpeta js
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
+        file_path = os.path.join(base_dir, '..', 'static', 'js', 'stock_datos_mock.json')
+        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
 
         with open(file_path, 'r') as file:
             data = json.load(file)
@@ -59,8 +60,9 @@ def obtener_contabilidad():
         print(f"Error al obtener contabilidad: {e}")
         return []'''
     try:   
-        base_dir = os.path.dirname(os.path.abspath(__file__))  #carpeta actual: templates/utils
-        file_path = os.path.join(base_dir, 'js', 'cont_datos_mock.json')  # bajando a la carpeta js
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
+        file_path = os.path.join(base_dir, '..', 'static', 'js', 'cont_datos_mock.json')
+        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
 
         with open(file_path, 'r') as file:
             data = json.load(file)
