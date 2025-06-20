@@ -75,17 +75,6 @@ def generar_reporte_stock(stock):
     pdf.cell(40, 10, "Nombre", 1, 0, "C")
     pdf.cell(40, 10, "Bodega", 1, 1, "C")
 
-    '''id_st
- sku
-nombre
-descripcion
-precio
-costo
-creacion
-id_categoria
-nombre_categoria
-descripcion_categoria'''
-
     pdf.set_font("Arial", "", 10)
     # aqui llaman a los datos tal cual salen en las bd de cada equipo.
     for st in stock:
