@@ -48,10 +48,8 @@ def Proveedores(request):
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
 
-<<<<<<< HEAD
 def Despacho(request):
     return render(request, 'Despacho.html')
-=======
 # :::: Nuevas Vistas de API para Gráficos en MainPage ::::::
 
 def api_get_monetization_data(request):
@@ -156,7 +154,6 @@ def api_get_audience_data(request):
         ]
     }
     return JsonResponse(data)
->>>>>>> Felipe
 
 #:::::: Descargas de PDFs ::::::
 
