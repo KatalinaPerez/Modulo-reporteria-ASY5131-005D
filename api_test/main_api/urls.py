@@ -18,7 +18,7 @@ urlpatterns = [
     path("proveedores/", views.Proveedores, name="Proveedores"),
     path("adquisiciones/", views.Adquisiciones, name="Adquisiciones"),
     path("despacho/", views.Despacho, name="Despacho"),
-
+    
     # Nuevas URLs para las APIs de gráficos en MainPage
     path('api/monetization-data/', views.api_get_monetization_data, name='api_monetization_data'),
     path('api/engagement-data/', views.api_get_engagement_data, name='api_engagement_data'),
