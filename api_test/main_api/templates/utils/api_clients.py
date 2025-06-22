@@ -1,14 +1,17 @@
 import requests
+import json
+import os
 #vienen de apis de internet
 BASE_URL_PRODUCTOS = "https://fakestoreapi.com/products"
 BASE_URL_USUARIOS = "https://jsonplaceholder.typicode.com/users"
 
 #Apis de nuestro curso
-BASE_URL_STOCK = "aun no la pasan, pero sabemos la structura"
-BASE_URL_CONTABILIDAD = "http://34.225.192.85:8000/api/schema/swagger-ui/#/"
+BASE_URL_STOCK = "https://integracionstock-etefhkhbcadegaej.brazilsouth-01.azurewebsites.net/products"
+BASE_URL_CONTABILIDAD = "http://34.225.192.85:8000/api/asientoscontables/"
 BASE_URL_ADQUISICIONES = "http://35.153.174.128/api/compras/"
 BASE_URL_VENTAS = "http://34.238.247.153:8000/api/"
-BASE_URL_PROVEEDORES = " http://34.194.212.252/docs/"
+BASE_URL_PROVEEDORES = "http://34.194.212.252/docs/"
+BASE_URL_SEGURIDAD = "http://35.168.133.16:3000/login"
 
 def obtener_usuarios():
     try:
@@ -30,32 +33,65 @@ def obtener_productos():
         return [] 
 
 def obtener_stock():
-    try:
+    '''try:
         response = requests.get(BASE_URL_STOCK)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener stock: {e}")
+        return []'''
+    try:   
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
+        file_path = os.path.join(base_dir, '..', 'static', 'js', 'stock_datos_mock.json')
+        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
+
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f"Error al leer el archivo mock: {e}")
         return []
 
 def obtener_contabilidad():
-    try:
+    '''try:
         response = requests.get(BASE_URL_CONTABILIDAD)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener contabilidad: {e}")
+        return []'''
+    try:   
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
+        file_path = os.path.join(base_dir, '..', 'static', 'js', 'cont_datos_mock.json')
+        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
+
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f"Error al leer el archivo mock: {e}")
         return []
     
 def obtener_adquisiciones():
-    try:
+    '''try:
         response = requests.get(BASE_URL_ADQUISICIONES)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener adquisiciones: {e}")
-        return []
+        return []'''
+    try:   
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
+        file_path = os.path.join(base_dir, '..', 'static', 'js', 'adq_datos_mock.json')
+        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
 
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        return data
+    except Exception as e:
+        print(f"Error al leer el archivo mock: {e}")
+        return []
+    
 def obtener_ventas():
     try:
         response = requests.get(BASE_URL_VENTAS)

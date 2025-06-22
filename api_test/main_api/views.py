@@ -6,18 +6,17 @@ from django.http import HttpResponse, JsonResponse
 import os
 import platform
 from django.http import HttpResponse
-from .templates.utils.api_clients import obtener_usuarios, obtener_productos, obtener_contabilidad, obtener_proveedores, obtener_adquisiciones, obtener_stock, obtener_ventas  
+# Importa las funciones para obtener datos de tus APIs existentes
+from .templates.utils.api_clients import obtener_usuarios, obtener_productos, obtener_contabilidad, obtener_proveedores, obtener_adquisiciones, obtener_stock, obtener_ventas
 from .templates.utils.keys import BUCKET_NAME
 from .templates.utils.s3_utils import upload_s3, download_s3, list_files_s3, get_s3
 from .templates.utils.pdf_usuarios import generar_reporte_usu
 from .templates.utils.pdf_generator import generar_reporte_cont, generar_reporte_products, generar_reporte_prov_pedido, generar_reporte_stock, generar_reporte_adqui
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.contrib.auth.decorators import login_required, permission_required #Importa los permisos
+from django.contrib.auth.decorators import login_required, permission_required 
 
-#BUCKET_NAME = 'reportesgen'
-
-# :::: Vistas ::::::
+# :::: Vistas de Renderizado de Páginas ::::::
 def index(request):
     return render(request, 'index.html')
 
@@ -50,6 +49,9 @@ def Stock(request):
         productos = []
     return render(request, 'Stock.html', {"productos": productos})
 
+def Despacho(request):
+    return render(request, 'Despacho.html')
+
 def mostrar_usuarios(request):
     usuarios = obtener_usuarios()
     if not usuarios:
@@ -58,6 +60,7 @@ def mostrar_usuarios(request):
     return render(request, "usuarios.html", {"usuarios": usuarios})
 
 def Contabilidad(request):
+
     try:
         response = requests.get('http://34.225.192.85:8000/api/asientoscontables/')
         response.raise_for_status()
@@ -69,11 +72,13 @@ def Contabilidad(request):
         cuentas = []
     return render(request, 'Contabilidad.html', {"cuentas": cuentas})
 
+
 def Proveedores(request):
     return render (request, 'Proveedores.html')
 
 def Adquisiciones(request):
     return render(request, 'Adquisiciones.html')
+
 
 #::::::: Editar Pdf :::::::::::
 
@@ -145,7 +150,6 @@ def editar_pdf_contabilidad(request):
     
     # Mostrar formulario de edición
     return render(request, 'editar_pdf_stock.html', {'cuentas': cuentas})
-
 
 def editar_pdf_stock(request):
     # Obtener datos de usuarios desde API externa
@@ -288,6 +292,113 @@ def editar_pdf(request):
 
     # Si es GET, mostrar formulario
     return render(request, 'editar_pdf.html', {'usuarios': usuarios})
+
+# :::: Nuevas Vistas de API para Gráficos en MainPage ::::::
+
+def api_get_monetization_data(request):
+    # Aquí puedes integrar 'obtener_ventas()' o la lógica para calcular la monetización
+    # Por ahora, usaré datos simulados para que veas el formato esperado.
+    # Si obtener_ventas() devuelve datos de ventas detallados, los procesarías aquí.
+    
+    # Ejemplo: Obtener ventas y calcular el total y top products
+    # ventas_data = obtener_ventas() # Asumiendo que esta función existe y trae datos relevantes
+
+    # Datos simulados basados en la imagen de MainPage.html
+    data = {
+        "totalRevenue": 123965.26,
+        "revenueChangePercent": 42.2,
+        "topProducts": [
+            {"product": "Super G Unisex Joggers", "revenue": 5231.8},
+            {"product": "Google Unisex Eco Tee B...", "revenue": 5099.6},
+            # Puedes añadir más productos aquí si obtener_ventas() los proporciona
+        ],
+        "chartData": [ # Datos para un gráfico de líneas/barras a lo largo del tiempo
+            {"date": "2024-01-01", "revenue": 10000},
+            {"date": "2024-01-02", "revenue": 12000},
+            {"date": "2024-01-03", "revenue": 15000},
+            {"date": "2024-01-04", "revenue": 13000},
+            {"date": "2024-01-05", "revenue": 17000},
+            {"date": "2024-01-06", "revenue": 19000},
+            {"date": "2024-01-07", "revenue": 22000},
+        ]
+    }
+    return JsonResponse(data)
+
+def api_get_engagement_data(request):
+    # Aquí puedes usar datos de tus usuarios, o de alguna API de analíticas
+    # para simular el engagement.
+    
+    # Ejemplo: Obtener datos de productos (si hay 'views' en ellos) o usuarios
+    # productos_data = obtener_productos() # Si los productos tienen un campo 'views'
+    # usuarios_data = obtener_usuarios() # Si quieres simular 'page titles' y 'views' de usuarios
+
+    # Datos simulados basados en la imagen de MainPage.html
+    data = {
+        "totalViews": 334987,
+        "viewChangePercent": 3.9,
+        "topPages": [
+            {"title": "19 ejemplos de promoci...", "views": 12547},
+            {"title": "Porter Connectors User...", "views": 2019},
+        ],
+        "chartData": [
+            {"date": "2024-01-01", "views": 1000},
+            {"date": "2024-01-02", "views": 1500},
+            {"date": "2024-01-03", "views": 1200},
+            {"date": "2024-01-04", "views": 1800},
+            {"date": "2024-01-05", "views": 2000},
+            {"date": "2024-01-06", "views": 1700},
+            {"date": "2024-01-07", "views": 2500},
+        ]
+    }
+    return JsonResponse(data)
+
+def api_get_acquisition_data(request):
+    # Aquí puedes usar datos de tus usuarios (ej. de dónde provienen)
+    # Ejemplo:
+    # usuarios = obtener_usuarios()
+    # Contar usuarios por 'source' si tu API de usuarios lo proporciona
+    
+    # Datos simulados basados en la imagen de MainPage.html
+    data = {
+        "totalUsers": 62708,
+        "userChangePercent": 4.2,
+        "topSources": [
+            {"source": "(direct)", "users": 61311},
+            {"source": "google", "users": 694},
+        ],
+        "chartData": [
+            {"month": "Ene", "users": 5000},
+            {"month": "Feb", "users": 7000},
+            {"month": "Mar", "users": 6500},
+            {"month": "Abr", "users": 8000},
+        ]
+    }
+    return JsonResponse(data)
+
+def api_get_audience_data(request):
+    # Aquí puedes usar datos de tus usuarios para demografía o ubicación.
+    # Ejemplo:
+    # usuarios = obtener_usuarios()
+    # Procesar usuarios para obtener datos de ciudad/país, rangos de edad, etc.
+
+    # Datos simulados basados en la imagen de MainPage.html
+    data = {
+        "geoChartValue": 114961.76, # Este valor parece ser un total para el mapa de audiencia
+        "demographics": [ # Ejemplo de datos para un gráfico de pastel/barras de demografía
+            {"age_group": "18-24", "users": 20000},
+            {"age_group": "25-34", "users": 40000},
+            {"age_group": "35-44", "users": 30000},
+            {"age_group": "45+", "users": 24961},
+        ],
+        "tech": [ # Ejemplo de datos para un gráfico de pastel/barras de tecnología
+            {"device": "Mobile", "users": 70000},
+            {"device": "Desktop", "users": 40000},
+            {"device": "Tablet", "users": 4961},
+        ]
+    }
+    return JsonResponse(data)
+
+
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):
@@ -332,7 +443,6 @@ def desc_pdf_contabilidad(request):
     response['Content-Disposition'] = 'attachment; filename="reporte_contabilidad.pdf"'
     return response
 
-
 def api_descargar_pdf_s3(request, tipo):
     print("TIPO RECIBIDO:", tipo)
     if tipo == "usuarios":
@@ -349,7 +459,10 @@ def api_descargar_pdf_s3(request, tipo):
 
     elif tipo == "stock":
         datos = obtener_stock()
+        print("DATOS STOCK:", datos) 
         generar_pdf = generar_reporte_stock
+        carpeta_s3 = "reportes_stock" # Añadido para consistencia
+        nombre_base = "reporte_stock" # Añadido para consistencia
 
     elif tipo == "contabilidad":
         datos = obtener_contabilidad()
@@ -407,47 +520,8 @@ def api_descargar_pdf_s3(request, tipo):
 def stock_view(request):
     return render(request, 'stock/stock.html')
 
-'''def desc_s3(request, tipo):
-    print("TIPO RECIBIDO:", tipo)
-    if tipo == "usuarios":
-        datos = obtener_usuarios()
-        generar_pdf = generar_reporte_usu
-        carpeta_s3 = "reportes"
-        nombre_base = "reporte_usuarios"
-    elif tipo == "productos":
-        datos = obtener_productos()
-        generar_pdf = generar_reporte_products
-        carpeta_s3 = "reportes_productos"
-        nombre_base = "reporte_productos"
-    elif tipo == "contabilidad":
-        datos = obtener_contabilidad()
-        generar_pdf = generar_reporte_cont
-        carpeta_s3 = "reportes_contabilidad"
-        nombre_base = "reporte_contabilidad"
-        
-    else:
-        return HttpResponse("❌ Tipo de reporte no válido", status=400)
-
-    if not datos:
-        return HttpResponse(f"Error al obtener datos de {tipo}", status=500)
-
-    try:
-        pdf_bytes = generar_pdf(datos)
-    except Exception as e:
-        return HttpResponse(f"Error generando el PDF de {tipo}: {e}", status=500)
-
-    fecha_actual = datetime.now().strftime("%Y-%m-%d")
-    nombre_archivo = f"{nombre_base}_{fecha_actual}.pdf"
-    s3_key = f"{carpeta_s3}/{fecha_actual}/{nombre_archivo}"
-
-    upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
-    if not upload_success:
-        return HttpResponse("Error al subir el PDF a S3", status=500)
-
-    download_path = os.path.join(os.path.expanduser("~"), "Downloads", nombre_archivo)
-    download_success = download_s3(BUCKET_NAME, s3_key, download_path)
-    if not download_success:
-        return HttpResponse("Error al descargar el PDF desde S3", status=500)
-
-    return HttpResponse(f"✅ PDF de {tipo} subido a S3 y descargado en: {download_path}", status=200)
+'''
+Para validar las paginas en cada api, debo hacer una condición que valida el usuario logueado
+para ello, llamo la info de seguridad, llamo el nombre y el correo del usuario logueado
+y lo paso a una condicion, todo esto dentro de un jingja
 '''
