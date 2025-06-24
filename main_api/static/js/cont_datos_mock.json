@@ -1,0 +1,14 @@
+[
+    {
+        "idAsiento": "1",
+        "fechaAsiento": "2024-06-11",
+        "descripcionAsiento": "Compra de insumos",
+        "referenciasAsiento": "Factura 001"
+    },
+    {
+        "idAsiento": "2",
+        "fechaAsiento": "2024-06-12",
+        "descripcionAsiento": "Pago de servicios",
+        "referenciasAsiento": "Boleta 123"
+    }
+]
