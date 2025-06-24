@@ -76,35 +76,23 @@ def generar_reporte_stock(stock):
     pdf.cell(20, 10, "Precio", 1, 0, "C")
     pdf.cell(20, 10, "Costo", 1, 0, "C")
     #pdf.cell(30, 10, "Creación", 1, 0, "C")
-    #pdf.cell(20, 10, "ID Cat", 1, 0, "C")
-    pdf.cell(30, 10, "Nombre Cat", 1, 0, "C")
-    pdf.cell(30, 10, "Desc Cat", 1, 1, "C")
+    pdf.cell(20, 10, "ID Cat", 1, 0, "C")
 
     pdf.set_font("Arial", "", 10)
     # aqui llaman a los datos tal cual salen en las bd de cada equipo.
     for st in stock:
-        #id_st = st.get("id", "")[:30]
-        #sku = st.get("sku", "")
         nombre = st.get("name", "")
         descripcion = st.get("description", "")
         precio = str(st.get("price", ""))
         costo = str(st.get("cost", ""))
-        #creacion = str(st.get("createdAt", ""))
-        #id_categoria = str(st.get("category", {}).get("id", ""))
-        categoria = st.get("category", {})
-        nombre_categoria = categoria.get("name", "")  # Extraer sólo el 'name' de category
-        descripcion_categoria = categoria.get("description", "")  # Extraer sólo el 'description' de category
-
-        #pdf.cell(20, 10, id_st, 1, 0, "L")
-        #pdf.cell(20, 10, sku, 1, 0, "L")
+        categoria = st.get("categoryID", "")
+        
         pdf.cell(30, 10, nombre, 1, 0, "L")
         pdf.cell(30, 10, descripcion, 1, 0, "L")
         pdf.cell(20, 10, precio, 1, 0, "L")
         pdf.cell(20, 10, costo, 1, 0, "L")
-        #pdf.cell(30, 10, creacion, 1, 0, "L")
-        #pdf.cell(20, 10, id_categoria, 1, 0, "L")
-        pdf.cell(30, 10, nombre_categoria, 1, 0, "L")
-        pdf.cell(30, 10, descripcion_categoria, 1, 1, "L")
+        pdf.cell(20, 10, categoria, 1, 0, "L")
+        pdf.ln(10)  # 👈 Este salto de línea es necesario para pasar a la siguiente fila
 
     pdf_bytes = pdf.output(dest='S').encode('latin1')
     print("Tamaño del PDF generado:", len(pdf_bytes))
@@ -133,11 +121,11 @@ def generar_reporte_adqui(adquisiciones):
 
     # Tabla
     pdf.set_font("Arial", "B", 10)
-    pdf.cell(10, 10, "ID", 1, 0, "C")
-    pdf.cell(40, 10, "Fecha", 1, 0, "C")
-    pdf.cell(40, 10, "Precio de Compra", 1, 0, "C")
-    pdf.cell(30, 10, "Cantidad", 1, 1, "C")
-    pdf.cell(40, 10, "Producto", 1, 1, "C")
+    pdf.cell(10, 10, "ID", 1, 0, "L")
+    pdf.cell(40, 10, "Fecha", 1, 0, "L")
+    pdf.cell(40, 10, "Precio de Compra", 1, 0, "L")
+    pdf.cell(30, 10, "Cantidad", 1, 1, "L")
+    pdf.cell(40, 10, "Producto", 1, 1, "L")
 
     pdf.set_font("Arial", "", 10)
     # aqui llaman a los datos tal cual salen en las bd de cada equipo.
@@ -158,7 +146,6 @@ def generar_reporte_adqui(adquisiciones):
     pdf_bytes = pdf.output(dest='S').encode('latin1')
     print("Tamaño del PDF generado:", len(pdf_bytes))
     return pdf_bytes
-
 
 def generar_reporte_prov_pedido(proveedores):
     print("🟣 Iniciando generación del PDF de proveedores")
@@ -205,7 +192,6 @@ def generar_reporte_prov_pedido(proveedores):
     pdf_bytes = pdf.output(dest='S').encode('latin1')
     print("Tamaño del PDF generado:", len(pdf_bytes))
     return pdf_bytes
-
 
 #Viene desde api de internet
 def generar_reporte_products(productos):
