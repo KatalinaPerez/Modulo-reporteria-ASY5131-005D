@@ -32,5 +32,5 @@ urlpatterns = [
     path('editar_pdf/', views.editar_pdf, name='editar_pdf'),
 
     #Generacion de api
-    #path('api/pdf/<str:tipo>/', views.GenerarReporteAPIView.as_view(), name='api_generar_reporte'),
+    path('api/pdf/<str:tipo>/', views.GenerarReporteAPIView.as_view(), name='api_generar_reporte'),
 ]
