@@ -31,10 +31,7 @@ urlpatterns = [
     path("desc_pdf_contabilidad/", views.desc_pdf_contabilidad, name="desc_pdf_contabilidad"),
     path("desc_pdf_products/", views.desc_pdf_products, name="desc_pdf_products"),
     path('editar_pdf/', views.editar_pdf, name='editar_pdf'),
-    #path("desc_s3_usu/", views.desc_s3_usu, name="desc_s3_usu"),
-    #path("desc_s3_products/", views.desc_s3_products, name="desc_s3_products"),
-]
 
-# IMPORTANTE: Asegúrate de que NO haya bloques 'if settings.DEBUG:' aquí al final.
-# if settings.DEBUG:
-#    urlpatterns += staticfiles_urlpatterns()
+    #Generacion de api
+    path('api/pdf/<str:tipo>/', views.GenerarReporteAPIView.as_view(), name='api_generar_reporte'),
+]
