@@ -188,9 +188,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- NUEVAS FUNCIONES PARA CARGAR CONTADORES ---
 
-    // Llamar a la función para cada sección con la API correspondiente
-    // y pasar la función renderChart
+    async function loadCounter(api_url, element_id, label) {
+        try {
+            const response = await fetch(api_url);
+            if (!response.ok) {
+                throw new Error(`Error HTTP! status: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            const countElement = document.getElementById(element_id);
+            if (countElement) {
+                // Asumiendo que la API devuelve { 'stockCount': N } o { 'securityUsersCount': N }
+                const value = data.stockCount !== undefined ? data.stockCount : data.securityUsersCount;
+                countElement.textContent = value.toLocaleString('en-US'); // Formato numérico
+            } else {
+                console.warn(`Elemento con ID '${element_id}' no encontrado para el contador.`);
+            }
+        } catch (error) {
+            console.error(`Error al cargar el contador de ${label}:`, error);
+            const countElement = document.getElementById(element_id);
+            if (countElement) {
+                countElement.textContent = 'Error';
+            }
+        }
+    }
+
+    // --- LLAMADAS A LAS FUNCIONES DE CARGA ---
+
+    // Llamadas para los contadores (deben ir al inicio del DOMContentLoaded)
+    loadCounter('/api/stock-count/', 'stock-count', 'stock');
+    loadCounter('/api/security-users-count/', 'security-users-count', 'usuarios de seguridad');
+
+    // Llamadas para las secciones de gráficos (existentes)
     loadDataAndPopulate('/api/monetization-data/', {
         monetization: {
             value: '.monetization .metric-value',

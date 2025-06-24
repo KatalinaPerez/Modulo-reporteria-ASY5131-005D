@@ -19,11 +19,15 @@ urlpatterns = [
     path("adquisiciones/", views.Adquisiciones, name="Adquisiciones"),
     path("despacho/", views.Despacho, name="Despacho"),
     
-    # Nuevas URLs para las APIs de gráficos en MainPage
+    # URLs para las APIs de gráficos en MainPage
     path('api/monetization-data/', views.api_get_monetization_data, name='api_monetization_data'),
     path('api/engagement-data/', views.api_get_engagement_data, name='api_engagement_data'),
     path('api/acquisition-data/', views.api_get_acquisition_data, name='api_acquisition_data'),
     path('api/audience-data/', views.api_get_audience_data, name='api_audience_data'),
+
+    # NUEVAS URLs para los contadores de Stock y Seguridad
+    path('api/stock-count/', views.api_get_stock_count, name='api_stock_count'),
+    path('api/security-users-count/', views.api_get_security_users_count, name='api_security_users_count'),
 
     path('api/pdf/<str:tipo>/',views.api_descargar_pdf_s3, name='api_descargar_pdf_s3'),
     path("desc_pdf_usu/", views.desc_pdf_usu, name="des_pdf_usu"),

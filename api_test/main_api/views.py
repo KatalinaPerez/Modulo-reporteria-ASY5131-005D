@@ -1,4 +1,4 @@
-from django.shortcuts import render 
+from django.shortcuts import render
 import requests
 from fpdf import FPDF
 from datetime import datetime
@@ -7,14 +7,28 @@ import os
 import platform
 from django.http import HttpResponse
 # Importa las funciones para obtener datos de tus APIs existentes
-from .templates.utils.api_clients import obtener_usuarios, obtener_productos, obtener_contabilidad, obtener_proveedores, obtener_adquisiciones, obtener_stock, obtener_ventas
+from .templates.utils.api_clients import (
+    obtener_usuarios,
+    obtener_productos,
+    obtener_contabilidad,
+    obtener_proveedores,
+    obtener_adquisiciones,
+    obtener_stock,
+    obtener_ventas
+)
 from .templates.utils.keys import BUCKET_NAME
 from .templates.utils.s3_utils import upload_s3, download_s3, list_files_s3, get_s3
 from .templates.utils.pdf_usuarios import generar_reporte_usu
-from .templates.utils.pdf_generator import generar_reporte_cont, generar_reporte_products, generar_reporte_prov_pedido, generar_reporte_stock, generar_reporte_adqui
+from .templates.utils.pdf_generator import (
+    generar_reporte_cont,
+    generar_reporte_products,
+    generar_reporte_prov_pedido,
+    generar_reporte_stock,
+    generar_reporte_adqui
+)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.contrib.auth.decorators import login_required, permission_required 
+from django.contrib.auth.decorators import login_required, permission_required
 
 # :::: Vistas de Renderizado de Páginas ::::::
 def index(request):
@@ -153,6 +167,27 @@ def api_get_audience_data(request):
     }
     return JsonResponse(data)
 
+# --- NUEVAS VISTAS DE API PARA LOS CONTADORES (STOCK Y USUARIOS DE SEGURIDAD) ---
+def api_get_stock_count(request):
+    try:
+        productos = obtener_stock() # Usa tu función existente para obtener el stock
+        count = len(productos) if productos else 0
+        return JsonResponse({'stockCount': count})
+    except Exception as e:
+        # En caso de error (ej. la API externa no responde), devuelve un error JSON
+        return JsonResponse({'error': str(e)}, status=500)
+
+def api_get_security_users_count(request):
+    try:
+        usuarios = obtener_usuarios() # Usa tu función existente para obtener los usuarios
+        count = len(usuarios) if usuarios else 0
+        return JsonResponse({'securityUsersCount': count})
+    except Exception as e:
+        # En caso de error, devuelve un error JSON
+        return JsonResponse({'error': str(e)}, status=500)
+# ---------------------------------------------------------------------------------
+
+
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):
@@ -199,6 +234,9 @@ def desc_pdf_contabilidad(request):
 
 def editar_pdf(request):
     # Obtener datos de usuarios desde API externa
+    # Asegúrate de que obtener_usuarios() no está llamando a la misma API que esta línea
+    # Si obtener_usuarios() ya lo hace, esta línea puede ser redundante o causar doble llamada.
+    # Preferiblemente, usa la misma función obtener_usuarios() que usas en api_get_security_users_count.
     usuarios = requests.get('https://jsonplaceholder.typicode.com/users').json()
     
     if request.method == 'POST':
@@ -273,7 +311,7 @@ def api_descargar_pdf_s3(request, tipo):
 
     elif tipo == "stock":
         datos = obtener_stock()
-        print("DATOS STOCK:", datos) 
+        print("DATOS STOCK:", datos)
         generar_pdf = generar_reporte_stock
         carpeta_s3 = "reportes_stock" # Añadido para consistencia
         nombre_base = "reporte_stock" # Añadido para consistencia
@@ -330,7 +368,7 @@ def api_descargar_pdf_s3(request, tipo):
 
 #:::::::::: Permisos que otorgamos con nuestra api :::::::::
 
-@permission_required('stock.view_stock', raise_exception=True) 
+@permission_required('stock.view_stock', raise_exception=True)
 def stock_view(request):
     return render(request, 'stock/stock.html')
 

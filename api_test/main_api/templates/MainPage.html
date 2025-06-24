@@ -18,95 +18,126 @@
     <main class="content">
         <header class="header">
             <h1>Reportes</h1>    
+            {# Si tienes el botón de "Editar pdf" aquí #}
+            {# <button class="edit-pdf-button" onclick="window.location.href='{% url 'editar_pdf' %}'">Editar pdf</button> #}
         </header>
         <section class="dashboard">
-            <div class="card monetization">
-                <div class="card-header">
-                    <h3>Monetization</h3>
-                    <button class="export-button"><span></span></button>
-                </div>
-                <div class="card-body">
-                    <div class="metric-value">$123,965.26</div>
-                    <div class="metric-change">+42.2%</div>
-                    <div class="chart">
-                        <canvas id="monetizationChartCanvas"></canvas> 
+            {# FILA 1: Contenedor para 2 columnas #}
+            <div class="dashboard-row-two-cols">
+                <div class="card stock-total">
+                    <div class="card-header">
+                        <h3>Total de Productos en Stock</h3>
                     </div>
-                    <div class="table-summary">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th class="right">Product Revenue</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>Super G Unisex Joggers</td><td class="right">$5,231.8</td></tr>
-                                <tr><td>Google Unisex Eco Tee B...</td><td class="right">$5,099.6</td></tr>
-                                <tr><td>Grand total</td><td class="right">$123,965.26</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="pagination">1-100 / 348 <button>&lt;</button> <button>&gt;</button></div>
+                    <div class="card-body">
+                        <div class="metric-value" id="stock-count">Cargando...</div>
+                        <div class="metric-change">Productos Disponibles</div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card engagement">
-                <div class="card-header">
-                    <h3>Engagement</h3>
-                    <button class="export-button"><span></span></button>
-                </div>
-                <div class="card-body">
-                    <div class="metric-value">334,987</div>
-                    <div class="metric-change">+3.9%</div>
-                    <div class="chart">
-                        <canvas id="engagementChartCanvas"></canvas>
+                <div class="card security-total">
+                    <div class="card-header">
+                        <h3>Total de Usuarios de Seguridad</h3>
                     </div>
-                    <div class="table-summary">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Page title</th>
-                                    <th class="right">Views</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>19 ejemplos de promoci...</td><td class="right">12,547</td></tr>
-                                <tr><td>Porter Connectors User...</td><td class="right">2,019</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="pagination">1-100 / 409 <button>&lt;</button> <button>&gt;</button></div>
+                    <div class="card-body">
+                        <div class="metric-value" id="security-users-count">Cargando...</div>
+                        <div class="metric-change">Usuarios Registrados</div>
                     </div>
                 </div>
-            </div>
+            </div> {# Fin .dashboard-row-two-cols #}
 
-            <div class="card acquisition">
-                <div class="card-header">
-                    <h3>Acquisition</h3>
-                    <button class="export-button"><span></span></button>
-                </div>
-                <div class="card-body">
-                    <div class="metric-value">62,708</div>
-                    <div class="metric-change">+4.2%</div>
-                    <div class="chart">
-                        <canvas id="acquisitionChartCanvas"></canvas>
+            {# FILA 2: Contenedor para 3 columnas #}
+            <div class="dashboard-row-three-cols">
+                <div class="card monetization">
+                    <div class="card-header">
+                        <h3>Monetization</h3>
+                        <button class="export-button"><span></span></button>
                     </div>
-                    <div class="table-summary">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Source</th>
-                                    <th class="right">Users</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>(direct)</td><td class="right">61,311</td></tr>
-                                <tr><td>google</td><td class="right">694</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="pagination">1-6 / 6 <button>&lt;</button> <button>&gt;</button></div>
+                    <div class="card-body">
+                        <div class="metric-value">$123,965.26</div>
+                        <div class="metric-change">+42.2%</div>
+                        <div class="chart">
+                            <canvas id="monetizationChartCanvas"></canvas> 
+                        </div>
+                        <div class="table-summary">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th class="right">Product Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Super G Unisex Joggers</td><td class="right">$5,231.8</td></tr>
+                                    <tr><td>Google Unisex Eco Tee B...</td><td class="right">$5,099.6</td></tr>
+                                    <tr><td>Grand total</td><td class="right">$123,965.26</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">1-100 / 348 <button>&lt;</button> <button>&gt;</button></div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="card engagement">
+                    <div class="card-header">
+                        <h3>Engagement</h3>
+                        <button class="export-button"><span></span></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="metric-value">334,987</div>
+                        <div class="metric-change">+3.9%</div>
+                        <div class="chart">
+                            <canvas id="engagementChartCanvas"></canvas>
+                        </div>
+                        <div class="table-summary">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Page title</th>
+                                        <th class="right">Views</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>19 ejemplos de promoci...</td><td class="right">12,547</td></tr>
+                                    <tr><td>Porter Connectors User...</td><td class="right">2,019</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">1-100 / 409 <button>&lt;</button> <button>&gt;</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card acquisition">
+                    <div class="card-header">
+                        <h3>Acquisition</h3>
+                        <button class="export-button"><span></span></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="metric-value">62,708</div>
+                        <div class="metric-change">+4.2%</div>
+                        <div class="chart">
+                            <canvas id="acquisitionChartCanvas"></canvas>
+                        </div>
+                        <div class="table-summary">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Source</th>
+                                        <th class="right">Users</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>(direct)</td><td class="right">61,311</td></tr>
+                                    <tr><td>google</td><td class="right">694</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">1-6 / 6 <button>&lt;</button> <button>&gt;</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div> {# Fin .dashboard-row-three-cols #}
+            
+            {# Si tienes una tarjeta de Audience, asegúrate de que esté aquí, quizás en otro contenedor de fila #}
+            {# <div class="card audience">...</div> #}
         </section>
     </main>
     <script src="{% static 'js/mainPageCharts.js' %}"></script>

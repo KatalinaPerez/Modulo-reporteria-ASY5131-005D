@@ -1,39 +1,45 @@
 /* Restablecimientos básicos y configuración de altura */
 html {
-    height: 100%; /* Asegura que el elemento html ocupe toda la altura de la ventana */
+    height: 100%;
 }
 
 body {
     font-family: sans-serif;
     margin: 0;
-    display: flex;
+    display: flex; /* CLAVE: Permite que .sidebar y .content se coloquen lado a lado */
     background-color: #f4f6f8;
     color: #333;
-    height: 100%; /* El body también debe ocupar el 100% de la altura del html */
-    overflow: hidden; /* Evita que el scroll general de la página aparezca, el scroll se controlará en .content */
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    overflow: hidden; /* Evita scroll general, el scroll se controlará en .content si es necesario */
 }
 
+/* Sidebar */
 .sidebar {
-    background-color: #262525; /* Un tono morado similar */
+    width: 250px; /* Ancho fijo de la barra lateral */
+    background-color: #262525;
     color: white;
-    width: 250px;
-    padding: 20px;
+    padding: 20px 0; /* Padding superior e inferior */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Si quieres que el sidebar ocupe toda la altura, puedes añadir: */
-    height: 100vh; /* O 100% si el body ya tiene 100vh y no hay otros elementos que afecten su cálculo */
-    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho/alto total */
+    position: fixed; /* CLAVE: Fija el sidebar para que no se mueva al hacer scroll */
+    height: 100vh; /* Ocupa toda la altura visible de la ventana */
+    box-sizing: border-box;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Permite scroll si el contenido del sidebar es muy largo */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
 
 .logo {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 30px;
+    padding-left: 20px; /* Ajusta para centrar el logo si es necesario */
 }
 
 .menu {
     width: 100%;
+    flex-grow: 1; /* Permite que el menú ocupe el espacio disponible */
 }
 
 .menu a {
@@ -41,7 +47,7 @@ body {
     align-items: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 10px 20px; /* Ajusta el padding para los enlaces del menú */
     margin-bottom: 5px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -60,9 +66,9 @@ body {
     margin-top: auto; /* Empuja este elemento al final del sidebar */
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
-    width: 100%; /* Asegura que ocupe todo el ancho disponible en el sidebar */
-    box-sizing: border-box; /* Incluye padding en el ancho total */
-    text-align: center; /* Centra el contenido de community si es necesario */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .community img {
@@ -72,14 +78,15 @@ body {
     margin: 10px auto 0;
 }
 
-/* Contenido principal - CRUCIAL PARA LA ALTURA */
+/* Contenido principal */
 .content {
-    flex-grow: 1; /* Permite que el contenido principal ocupe todo el espacio restante horizontalmente */
+    margin-left: 250px; /* CLAVE: Crea un espacio igual al ancho del sidebar */
+    flex-grow: 1; /* CLAVE: Hace que ocupe todo el espacio restante a la derecha */
     padding: 20px;
-    display: flex; /* Habilita flexbox para organizar header y dashboard verticalmente */
-    flex-direction: column; /* Organiza los elementos hijos en una columna */
-    overflow-y: auto; /* **Permite el scroll solo en el contenido si el contenido excede la altura** */
-    box-sizing: border-box; /* Incluye padding en el ancho/alto total */
+    display: flex;
+    flex-direction: column; /* Organiza el header y el dashboard verticalmente */
+    overflow-y: auto; /* Permite el scroll solo en el contenido si excede la altura */
+    box-sizing: border-box;
 }
 
 .header {
@@ -87,9 +94,10 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
-    /* Ajusta si necesitas padding inferior o un borde para el header */
-    padding-bottom: 10px; /* Ejemplo de padding inferior */
-    border-bottom: 1px solid #e0e0e0; /* Ejemplo de línea divisoria */
+    padding: 20px; /* Añade padding al header */
+    background-color: #fff; /* Fondo blanco para el header */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra suave */
 }
 
 .header h1 {
@@ -116,31 +124,49 @@ body {
     background-color: #2980b9;
 }
 
-/* Dashboard - CRUCIAL PARA LA ALTURA DENTRO DEL CONTENIDO */
+/* Dashboard general, solo para contener las filas */
 .dashboard {
-    flex-grow: 1; /* Permite que el dashboard ocupe todo el espacio restante verticalmente dentro de .content */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    /* Alinea el contenido de la cuadrícula al inicio si hay espacio extra (para evitar que se estiren las filas) */
-    align-content: start; 
+    flex-grow: 1;
+    display: flex; /* Ahora es un flex container para las filas de tarjetas */
+    flex-direction: column; /* Apila las filas de tarjetas verticalmente */
+    gap: 20px; /* Espacio entre las filas de tarjetas */
 }
 
+/* Contenedor para 2 columnas (Stock y Seguridad) */
+.dashboard-row-two-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(50% - 15px), 1fr)); /* 2 columnas casi 50% cada una con gap */
+    gap: 20px;
+}
+
+/* Contenedor para 3 columnas (Monetization, Engagement, Acquisition) */
+.dashboard-row-three-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(33.33% - 14px), 1fr)); /* 3 columnas casi 33.33% cada una con gap */
+    gap: 20px;
+}
+
+/* Estilos generales para las tarjetas */
 .card {
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    /* Establece una altura mínima para las tarjetas, o déjala fluir si el contenido es muy variable */
-    min-height: 300px; /* Ajusta según sea necesario para que el gráfico tenga espacio */
+    min-height: 280px; /* Altura mínima por defecto para todas las tarjetas */
+}
+
+/* Ajusta la altura mínima para las tarjetas de stock y seguridad */
+.card.stock-total,
+.card.security-total {
+    min-height: 150px; /* Puedes ajustar este valor para hacerlas más o menos pequeñas */
 }
 
 .card-header {
-    background-color: #f0f0f0;
+    background-color: #f8f8f8;
     padding: 15px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -157,69 +183,56 @@ body {
     border: none;
     cursor: pointer;
     padding: 5px;
-    width: 20px;
-    height: 20px;
-    /* Si estás usando Font Awesome, puedes usar: */
-    /* font-family: 'Font Awesome 6 Free'; font-weight: 900; content: '\f019'; */
-    /* O si es imagen, asegúrate que la ruta sea correcta */
-    /* background-image: url('{% static "img/export-icon.png" %}'); */
-    /* background-size: cover; */
+    width: 24px;
+    height: 24px;
 }
 
-/* Si usas Font Awesome para el botón de exportar: */
 .export-button::before {
-    content: '\f019'; /* Icono de descarga */
+    content: '\f019';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
-    color: #888; /* Color del icono */
+    color: #888;
+    font-size: 1.2em;
 }
-
 
 .card-body {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Permite que el cuerpo de la tarjeta se expanda */
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
 .metric-value {
-    font-size: 1.8em;
+    font-size: 2.2em;
     font-weight: bold;
     color: #2c3e50;
     margin-bottom: 5px;
 }
 
 .metric-change {
-    color: #27ae60; /* Verde para positivo */
+    color: #27ae60;
     font-size: 0.9em;
     margin-bottom: 10px;
 }
 
 .metric-change.negative {
-    color: #c0392b; /* Rojo para negativo */
+    color: #c0392b;
 }
 
 .chart {
-    /* **Importante: Define una altura para el contenedor del gráfico** */
-    position: relative; /* Para que Chart.js pueda posicionar elementos internos */
-    height: 180px; /* Ajusta esta altura según lo que necesites para tus gráficos */
+    position: relative;
+    height: 120px;
     margin-bottom: 15px;
-    display: flex; /* Para centrar el canvas si fuera necesario */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Si todavía tienes img dentro de .chart (aunque deberías usar canvas para Chart.js) */
-.chart img {
-    max-width: 100%;
-    height: 100%; /* Asegura que la imagen ocupe la altura del contenedor */
-    object-fit: contain; /* Para que la imagen no se recorte si las proporciones no coinciden */
-}
-
-
 .table-summary {
-    flex-grow: 1; /* Permite que la tabla ocupe el espacio restante dentro de la tarjeta */
-    overflow-x: auto; /* Si la tabla es muy ancha, que tenga scroll horizontal */
+    flex-grow: 1;
+    overflow-x: auto;
+    margin-top: 10px;
 }
 
 .table-summary table {
@@ -228,7 +241,7 @@ body {
 }
 
 .table-summary th, .table-summary td {
-    padding: 8px;
+    padding: 8px 0;
     border-bottom: 1px solid #eee;
     text-align: left;
 }
@@ -242,26 +255,19 @@ body {
     color: #555;
 }
 
-.table-summary tbody tr:last-child td {
-    border-bottom: none;
-    /* Eliminar font-weight: bold; si el total ya tiene su propia fila con clase específica */
-}
-
-/* Asegura que la fila de "Grand total" tenga negrita si la creas con una clase */
 .table-summary tbody .grand-total-row td {
     font-weight: bold;
-    border-top: 1px solid #ccc; /* Una línea para el total */
+    border-top: 1px solid #ccc;
 }
 
-
 .pagination {
-    margin-top: auto; /* Empuja la paginación al final del card-body */
+    margin-top: auto;
     color: #777;
     font-size: 0.8em;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-top: 10px; /* Un poco de espacio antes de la paginación */
+    padding-top: 10px;
 }
 
 .pagination button {
@@ -280,41 +286,113 @@ body {
 
 .audience-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    flex-grow: 1; /* Permite que este contenedor se expanda en el Audience Card */
-    align-items: center; /* Centra verticalmente los elementos en la cuadrícula */
-    justify-items: center; /* Centra horizontalmente los elementos en la cuadrícula */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    flex-grow: 1;
+    align-items: center;
+    justify-items: center;
 }
 
 .audience-charts > div {
     text-align: center;
-    position: relative; /* Para que el canvas se ajuste bien */
-    height: 150px; /* Altura para los sub-gráficos de audiencia */
-    width: 100%; /* Asegura que el div ocupe todo el ancho de su celda en la cuadrícula */
-    display: flex; /* Para organizar contenido dentro */
+    position: relative;
+    height: 120px;
+    width: 100%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #eee; /* Puedes añadir un borde para visualización */
+    border: 1px solid #eee;
     border-radius: 5px;
-    box-sizing: border-box; /* Incluye padding/border en el tamaño */
+    box-sizing: border-box;
 }
 
 .audience-charts canvas {
     max-width: 100%;
-    height: 100%; /* Asegura que el canvas ocupe la altura del contenedor */
-}
-
-.audience-charts img { /* Solo si sigues usando img como fallback/placeholder */
-    max-width: 100%;
     height: 100%;
-    object-fit: contain;
-    margin-bottom: 5px;
 }
 
 .audience-charts .value {
     font-size: 0.9em;
     color: #777;
-    margin-top: 5px; /* Espacio para el valor numérico */
+    margin-top: 5px;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 1200px) {
+    /* En pantallas medianas, ambas filas van a 2 columnas */
+    .dashboard-row-two-cols,
+    .dashboard-row-three-cols {
+        grid-template-columns: repeat(auto-fit, minmax(calc(50% - 15px), 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    /* En tablets, el sidebar se puede hacer más compacto */
+    .sidebar {
+        width: 70px;
+        align-items: center;
+    }
+    .sidebar .logo {
+        font-size: 1.2em;
+        padding-left: 0;
+    }
+    .sidebar .menu span {
+        display: none;
+    }
+    .sidebar .menu a {
+        padding: 15px 0;
+        justify-content: center;
+    }
+    .menu a .icon {
+        margin-right: 0;
+    }
+    .content {
+        margin-left: 70px;
+    }
+    /* En pantallas pequeñas, ambas filas se apilan en una columna */
+    .dashboard-row-two-cols,
+    .dashboard-row-three-cols {
+        grid-template-columns: 1fr;
+    }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Para móviles, ajustes adicionales */
+    .content {
+        padding: 10px;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 999;
+    }
+    .sidebar .logo, .sidebar .community {
+        display: none;
+    }
+    .sidebar .menu {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+    .sidebar .menu a {
+        padding: 10px;
+        flex-grow: 1;
+        text-align: center;
+    }
+    .content {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }
