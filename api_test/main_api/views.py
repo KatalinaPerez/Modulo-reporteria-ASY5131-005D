@@ -157,7 +157,7 @@ def api_get_audience_data(request):
 
 #:::::: Genero api :::::::::::::
 
-class GenerarReporteAPIView(APIView):
+'''class GenerarReporteAPIView(APIView):
 
     def get(self, tipo):
         print("TIPO RECIBIDO:", tipo)
@@ -230,7 +230,7 @@ class GenerarReporteAPIView(APIView):
 
         except Exception as e:
             return Response({"error": f"Error al descargar el PDF desde S3: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+'''
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):
@@ -335,7 +335,7 @@ def editar_pdf(request):
     # Mostrar formulario de edición (para solicitudes GET o si POST falla)
     return render(request, 'editar_pdf.html', {'usuarios': usuarios})
 
-def api_descargar_pdf_s3(tipo):
+def api_descargar_pdf_s3(request, tipo):
     print("TIPO RECIBIDO:", tipo)
     if tipo == "usuarios":
         datos = obtener_usuarios()
