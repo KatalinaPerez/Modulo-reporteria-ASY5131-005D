@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=&x(++f36znt_4__^m8dcsjdc#po+!emx(j(ffvp_i-@2t=7x^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['modulo-reporteria-asy5131-005d.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
