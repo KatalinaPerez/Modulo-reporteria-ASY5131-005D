@@ -50,7 +50,6 @@ def generar_reporte_cont(contabilidad):
 
 def generar_reporte_stock(stock):
     print("🟣 Iniciando generación del PDF de Stock")
-    # PDF personalizado
     class PDF(FPDF):
         def header(self):
             self.set_font("Arial", "B", 12)
@@ -64,44 +63,67 @@ def generar_reporte_stock(stock):
 
     pdf = PDF()
     pdf.add_page()
-    pdf.set_font("Arial", "B", 14)
+    pdf.set_font("Arial", "B", 12)
     pdf.cell(0, 10, "Listado de Stock", 0, 1, "C")
-    pdf.ln(10)
+    pdf.ln(5)
 
-    # Tabla
-    #pdf.cell(20, 10, "ID", 1, 0, "C")
-    #pdf.cell(20, 10, "SKU", 1, 0, "C")
-    pdf.cell(30, 10, "Nombre", 1, 0, "C")
-    pdf.cell(30, 10, "Descripción", 1, 0, "C")
-    pdf.cell(20, 10, "Precio", 1, 0, "C")
-    pdf.cell(20, 10, "Costo", 1, 0, "C")
-    #pdf.cell(30, 10, "Creación", 1, 0, "C")
-    pdf.cell(20, 10, "ID Cat", 1, 0, "C")
+    col_widths = [40, 60, 25, 25, 20]
+    headers = ["Nombre", "Descripción", "Precio", "Costo", "ID Cat"]
+
+    # Encabezados
+    for i, header in enumerate(headers):
+        pdf.cell(col_widths[i], 10, header, 1, 0, "C")
+    pdf.ln()
 
     pdf.set_font("Arial", "", 10)
-    # aqui llaman a los datos tal cual salen en las bd de cada equipo.
+    line_height = 5
+
     for st in stock:
         nombre = st.get("name", "")
         descripcion = st.get("description", "")
         precio = str(st.get("price", ""))
         costo = str(st.get("cost", ""))
-        categoria = st.get("categoryID", "")
-        
-        pdf.cell(30, 10, nombre, 1, 0, "L")
-        pdf.cell(30, 10, descripcion, 1, 0, "L")
-        pdf.cell(20, 10, precio, 1, 0, "L")
-        pdf.cell(20, 10, costo, 1, 0, "L")
-        pdf.cell(20, 10, categoria, 1, 0, "L")
-        pdf.ln(10)  # 👈 Este salto de línea es necesario para pasar a la siguiente fila
+        categoria = str(st.get("categoryID", ""))
+
+        # Dividir en líneas para ajustar texto
+        nombre_lines = pdf.multi_cell(col_widths[0], line_height, nombre, split_only=True)
+        desc_lines = pdf.multi_cell(col_widths[1], line_height, descripcion, split_only=True)
+        max_lines = max(len(nombre_lines), len(desc_lines), 1)
+        row_height = max_lines * line_height
+
+        x_start = pdf.get_x()
+        y_start = pdf.get_y()
+
+        # Nombre
+        pdf.multi_cell(col_widths[0], line_height, '\n'.join(nombre_lines + ['']*(max_lines - len(nombre_lines))), 1, "L")
+        pdf.set_xy(x_start + col_widths[0], y_start)
+
+        # Descripción
+        pdf.multi_cell(col_widths[1], line_height, '\n'.join(desc_lines + ['']*(max_lines - len(desc_lines))), 1, "L")
+        pdf.set_xy(x_start + col_widths[0] + col_widths[1], y_start)
+
+        # Precio
+        pdf.cell(col_widths[2], row_height, precio, 1, 0, "R")
+
+        # Costo
+        pdf.cell(col_widths[3], row_height, costo, 1, 0, "R")
+
+        # ID Cat
+        pdf.cell(col_widths[4], row_height, categoria, 1, 0, "C")
+
+        # Nueva línea al final de la fila
+        pdf.ln(row_height)
 
     pdf_bytes = pdf.output(dest='S').encode('latin1')
-    print("Tamaño del PDF generado:", len(pdf_bytes))
+    print("✅ PDF generado correctamente (tamaño:", len(pdf_bytes), ")")
     return pdf_bytes
+
+from fpdf import FPDF
+from datetime import datetime
 
 def generar_reporte_adqui(adquisiciones):
     print("🟣 Iniciando generación del PDF de adquisiciones")
 
-    # PDF personalizado
     class PDF(FPDF):
         def header(self):
             self.set_font("Arial", "B", 12)
@@ -115,33 +137,44 @@ def generar_reporte_adqui(adquisiciones):
 
     pdf = PDF()
     pdf.add_page()
+
+    # Título
     pdf.set_font("Arial", "B", 14)
     pdf.cell(0, 10, "Listado de Adquisiciones", 0, 1, "C")
     pdf.ln(10)
 
-    # Tabla
+    # Tabla: encabezados
     pdf.set_font("Arial", "B", 10)
-    pdf.cell(10, 10, "ID", 1, 0, "L")
-    pdf.cell(40, 10, "Fecha", 1, 0, "L")
-    pdf.cell(40, 10, "Precio de Compra", 1, 0, "L")
-    pdf.cell(30, 10, "Cantidad", 1, 1, "L")
-    pdf.cell(40, 10, "Producto", 1, 1, "L")
+    pdf.cell(10, 10, "ID", 1)
+    pdf.cell(35, 10, "Fecha", 1)
+    pdf.cell(35, 10, "Precio Compra", 1)
+    pdf.cell(25, 10, "Cantidad", 1)
+    pdf.cell(85, 10, "Producto", 1)
+    pdf.ln()
 
     pdf.set_font("Arial", "", 10)
-    # aqui llaman a los datos tal cual salen en las bd de cada equipo.
     for adq in adquisiciones:
-        # variable = str/cont (segun el tipo de dato que sea).get("nom igual a la bd", "valor por defecto si no existe")
         id_adq = str(adq.get("id", ""))
-        fecha_adq = adq.get("fecha", {})
-        precio_compra = str(adq.get("precio_compra", ""))
+        
+        # Formatea fecha
+        fecha_raw = adq.get("fecha", "")
+        try:
+            fecha_dt = datetime.fromisoformat(fecha_raw.replace("Z", ""))
+            fecha = fecha_dt.strftime("%Y-%m-%d")
+        except:
+            fecha = fecha_raw
+
+        precio = str(adq.get("precio_compra", ""))
         cantidad = str(adq.get("cantidad", ""))
         producto = str(adq.get("producto", ""))
 
-        pdf.cell(10, 10, id_adq, 1, 0, "L")
-        pdf.cell(40, 10, fecha_adq, 1, 0, "L")
-        pdf.cell(40, 10, precio_compra, 1, 0, "L")
-        pdf.cell(30, 10, cantidad, 1, 1, "L")
-        pdf.cell(40, 10, producto, 1, 1, "L")
+        # Celdas de datos
+        pdf.cell(10, 10, id_adq, 1)
+        pdf.cell(35, 10, fecha, 1)
+        pdf.cell(35, 10, precio, 1)
+        pdf.cell(25, 10, cantidad, 1)
+        pdf.cell(85, 10, producto, 1)
+        pdf.ln()
 
     pdf_bytes = pdf.output(dest='S').encode('latin1')
     print("Tamaño del PDF generado:", len(pdf_bytes))
