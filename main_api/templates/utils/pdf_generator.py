@@ -9,7 +9,7 @@ def generar_reporte_cont(contabilidad):
     class PDF(FPDF):
         def header(self):
             self.set_font("Arial", "B", 12)
-            self.cell(0, 10, "Reporte de Contabilidad - OBUMA", 0, 1, "C")
+            self.cell(0, 10, "Reporte de Contabilidad", 0, 1, "C")
             self.ln(5)
 
         def footer(self):
@@ -53,7 +53,7 @@ def generar_reporte_stock(stock):
     class PDF(FPDF):
         def header(self):
             self.set_font("Arial", "B", 12)
-            self.cell(0, 10, "Reporte de Stock - OBUMA", 0, 1, "C")
+            self.cell(0, 10, "Reporte de Stock", 0, 1, "C")
             self.ln(5)
 
         def footer(self):
@@ -67,7 +67,7 @@ def generar_reporte_stock(stock):
     pdf.cell(0, 10, "Listado de Stock", 0, 1, "C")
     pdf.ln(5)
 
-    col_widths = [40, 60, 25, 25, 20]
+    col_widths = [40, 60, 25, 25, 25]
     headers = ["Nombre", "Descripción", "Precio", "Costo", "ID Cat"]
 
     # Encabezados
@@ -83,7 +83,7 @@ def generar_reporte_stock(stock):
         descripcion = st.get("description", "")
         precio = str(st.get("price", ""))
         costo = str(st.get("cost", ""))
-        categoria = str(st.get("categoryID", ""))
+        categoria = str(st.get("categoryId", ""))
 
         # Dividir en líneas para ajustar texto
         nombre_lines = pdf.multi_cell(col_widths[0], line_height, nombre, split_only=True)
