@@ -11,17 +11,21 @@
 </head>
 <body>
     <aside class="sidebar">
-        <div class="logo">Reporteria ❤️</div>
+        <div class="logo">Reporteria❤️</div>
         {% include 'navbar.html' %}
     </aside>
+
     <main class="content">
         <header class="header">
             <h1>Reporte Seguridad</h1>
-            <div class="date-range">Fecha</div>
+            <div class="header-actions"> 
+            <div class="date-range" id="current-date"></div>
             <button class="connect-data-button" onclick="window.location.href='/desc_pdf_usu'" >Descarga PDF</button>
             <button class="connect-data-button" onclick="window.location.href='/api/pdf/usuarios'" >Descarga PDF de s3</button>
             <button class="connect-data-button" onclick="window.location.href='/editar_pdf'">Editar pdf</button>  
+            </div>
         </header>
+
         <section class="dashboard">
             <div class="card security">
                 <div class="card-header">
@@ -74,4 +78,5 @@
         </section>
     </main>
     <script src="{% static 'js/fakeapi.js' %}"></script>
+    <script src="{% static 'js/FechaActual.js' %}"></script>
 </html>

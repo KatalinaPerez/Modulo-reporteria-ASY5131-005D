@@ -16,9 +16,11 @@
   <main class="content">
     <header class="header">
       <h1>Reporte de Adquisiciones</h1>
-      <div class="date-range">Fecha</div>
-      <button class="connect-data-button" onclick="window.location.href='/desc_pdf_products'" >Descarga PDF</button>
-      <button class="connect-data-button" onclick="window.location.href='/api/pdf/adquisiciones'" >Descarga PDF de s3</button>
+      <div class="header-actions"> 
+        <div class="date-range" id="current-date"></div>
+        <button class="download-pdf-button" onclick="window.location.href='/desc_pdf_products'">Descarga PDF</button>
+        <button class="download-s3-button" onclick="window.location.href='/api/pdf/stock'">Descarga PDF de S3</button>
+    </div>
     </header>
 
     <section class="dashboard">
@@ -64,6 +66,7 @@
       </div>
     </section>
   </main>
-  <script src=""></script>
+  <script src="{% static 'js/AdquisiApi.js' %}"></script>
+  <script src="{% static 'js/FechaActual.js' %}"></script>
 </body>
 </html>

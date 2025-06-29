@@ -2,27 +2,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panel de Reportería — Stock</title>
-  <link rel="stylesheet" href="{% static 'css/Stock.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel de Reportería — Stock</title>
+    <link rel="stylesheet" href="{% static 'css/Stock.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <aside class="sidebar">
     <div class="logo">Reporteria❤️</div>
     {% include 'navbar.html' %}
   </aside>
-  <main class="content">
+
+    <main class="content">
     <header class="header">
       <h1>Reporte de Stock</h1>
-      <div class="date-range">Fecha</div>
-      <button class="connect-data-button" onclick="window.location.href='/desc_pdf_products'" >Descarga PDF</button>
-      <button class="connect-data-button" onclick="window.location.href='/api/pdf/stock'" >Descarga PDF de s3</button>
+      <div class="header-actions"> 
+        <div class="date-range" id="current-date"></div>
+        <button class="download-pdf-button" onclick="window.location.href='/desc_pdf_products'">Descarga PDF</button>
+        <button class="download-s3-button" onclick="window.location.href='/api/pdf/stock'">Descarga PDF de S3</button>
+    </div>
+  </header>
 
-    </header>
-
-    <section class="dashboard">
+<section class="dashboard">
       <div class="card stock">
         <div class="card-header">
           <h3>Productos</h3>
@@ -37,34 +39,35 @@
                 <th>Precio</th>
               </tr>
             </thead>
-            <tbody id="products-table"></tbody>
+            <tbody id="stock-table"></tbody> 
           </table>
 
           <div class="pagination">
             <span>Filtrar por:</span>
-            <select id="filter-column">
+            <select id="filter-column-stock">
               <option value="title">Título</option>
               <option value="category">Categoría</option>
             </select>
-            <input type="text" id="filter-value" placeholder="Buscar...">
-            <button id="apply-filter">Filtrar</button>
+            <input type="text" id="filter-value-stock" placeholder="Buscar...">
+            <button id="apply-filter-stock">Filtrar</button>
 
             <span>Ordenar por:</span>
-            <select id="sort-column">
-              <option value="title">Título</option>
+            <select id="sort-column-stock">
+              <option value="id">ID</option> <option value="title">Título</option>
               <option value="price">Precio</option>
             </select>
-            <select id="sort-order">
+            <select id="sort-order-stock">
               <option value="asc">Ascendente</option>
               <option value="desc">Descendente</option>
             </select>
-            <button id="apply-sort">Ordenar</button>
+            <button id="apply-sort-stock">Ordenar</button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <script src="/static/js/productapi.js"></script>
+  <script src="{% static 'js/productapi.js' %}"></script>
+  <script src="{% static 'js/FechaActual.js' %}"></script>
 </body>
 </html>

@@ -37,4 +37,7 @@ urlpatterns = [
 
     #Generacion de api
     #path('api/pdf/<str:tipo>/', views.GenerarReporteAPIView.as_view(), name='api_generar_reporte'),
+
+    # ¡¡¡AQUÍ ES DONDE SE AGREGA LA URL PARA EL PROXY DE STOCK!!!
+    path('api/proxy/stock/', views.proxy_stock_api, name='proxy_stock_api'),
 ]

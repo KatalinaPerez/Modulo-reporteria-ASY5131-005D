@@ -1,3 +1,10 @@
+/* main_api/static/css/base.css */
+
+/* Base y Reset */
+html {
+    height: 100%; /* Asegura que el html ocupe toda la altura */
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
@@ -7,70 +14,83 @@ body {
     min-height: 100vh; /* Asegura que el body tenga al menos la altura de la ventana */
 }
 
+/* Sidebar */
 .sidebar {
     background-color: #262525;
     color: white;
     width: 250px;
-    padding: 20px;
+    padding: 20px 0; /* Padding superior e inferior, 0 a los lados para que el contenido respire */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* --- ¡AJUSTES IMPORTANTES PARA LA ALTURA Y POSICIÓN DEL SIDEBAR! --- */
     height: 100vh; /* Fuerza al sidebar a ocupar el 100% de la altura de la ventana */
-    position: sticky; /* Mantiene el sidebar fijo al hacer scroll */
+    position: fixed; /* Mantiene el sidebar fijo al hacer scroll y alinea al viewport */
     top: 0;           /* Lo pega a la parte superior de la ventana */
     overflow-y: auto; /* Permite scroll interno si el contenido del sidebar es demasiado largo */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-sizing: border-box; /* Incluye padding y border en el ancho/alto */
 }
 
 .logo {
-    font-size: 1.5em;
+    font-size: 1.8em; /* Ajustado a un tamaño que parece más común para logos de este tipo */
     font-weight: bold;
-    margin-bottom: 30px; /* Espacio debajo del logo */
+    margin-bottom: 30px;
+    color: #ffffff; /* Color que habías usado en versiones anteriores, se ve bien */
+    text-align: center;
+    width: 100%; /* Para que el padding y text-align funcionen bien */
+    box-sizing: border-box; /* Incluye padding en el ancho */
+    padding-left: 20px; /* Alinea con los elementos del menú */
+    padding-right: 20px;
 }
 
 .menu {
     width: 100%;
-    flex-grow: 1; /* Permite que el menú se expanda para ocupar el espacio restante en el sidebar */
-    padding: 0;   /* Elimina el padding predeterminado del navegador */
-    margin: 0;    /* Elimina el margen predeterminado del navegador */
-    display: flex; /* Convierte el menú en un contenedor flex para sus elementos */
-    flex-direction: column; /* Apila los elementos del menú verticalmente */
-    /* justify-content: flex-start; /* Opcional: Si quieres que los enlaces estén al inicio y el espacio vacío abajo */
-    /* justify-content: space-between; /* Opcional: Si quieres distribuir los enlaces por todo el alto del menú */
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Si usas un <ul> dentro del <nav class="menu"> en navbar.html, también ajusta */
 .menu ul {
-    list-style: none; /* Quitar viñetas */
-    padding: 0;       /* Quitar padding predeterminado */
-    margin: 0;        /* Quitar margin predeterminado */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Asegura que el ul ocupe todo el ancho del menú */
 }
-
 
 .menu a {
     display: flex;
     align-items: center;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
-    margin-bottom: 5px; /* Pequeño espacio entre los elementos del menú */
+    padding: 10px 20px; /* Ajustado a 20px para alineación */
+    margin-bottom: 5px;
     border-radius: 5px;
-    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+    transition: background-color 0.3s ease;
+    width: calc(100% - 40px); /* Ajusta el ancho para compensar el padding de 20px a cada lado */
+    box-sizing: border-box;
 }
 
 .menu a:hover, .menu a.active {
-    background-color: #6a1b9a; /* Color de fondo al pasar el ratón o si está activo */
+    background-color: #6a1b9a;
 }
 
 .menu a .icon {
-    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    margin-right: 10px;
     font-size: 1.2em;
 }
 
 .community {
-    margin-top: auto; /* Empuja este elemento a la parte inferior del sidebar */
+    margin-top: auto;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    padding-left: 20px; /* Mantener la alineación con el resto del contenido del sidebar */
+    padding-right: 20px;
 }
 
 .community img {
@@ -80,61 +100,120 @@ body {
     margin: 10px auto 0;
 }
 
+/* Contenido principal */
 .content {
-    flex-grow: 1; /* Permite que el contenido principal ocupe todo el espacio restante horizontalmente */
-    padding: 20px;
+    /* IMPORTANTE: Este margen empuja el contenido para que no se esconda detrás del sidebar fijo */
+    margin-left: 250px; /* Debe ser igual al 'width' del sidebar */
+    flex-grow: 1;
+    padding: 30px; /* Padding general del contenido */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; /* Incluye padding en el ancho/alto */
+    min-height: 100vh; /* Asegura que el contenido ocupe toda la altura restante de la ventana */
 }
 
+/* Header */
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Espacio debajo del header */
+    padding: 20px; /* Añade padding al header para que sea un "cuadro" */
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra suave y más pronunciada */
+    gap: 20px; /* Espacio entre los elementos del header */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan */
 }
 
 .header h1 {
     font-size: 2em;
     margin: 0;
     color: #2c3e50;
+    flex-grow: 1; /* Permite que el título ocupe el espacio restante */
+}
+
+/* Contenedor para la fecha y los botones en el header */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: flex-end; /* Alinea los elementos a la derecha */
+    flex-shrink: 0; /* Evita que este contenedor se encoja demasiado */
 }
 
 .date-range {
     color: #7f8c8d;
-}
-
-.connect-data-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
     padding: 10px 15px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-left: 10px; /* Añadido para separar los botones */
+    font-size: 0.9em;
+    white-space: nowrap;
 }
 
-.connect-data-button:hover {
-    background-color: #2980b9;
+/* Botones del Header (connect-data-button, download-pdf-button, download-s3-button) */
+.connect-data-button,
+.download-pdf-button,
+.download-s3-button {
+    background-color: #8222be;
+;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.connect-data-button:hover,
+.download-pdf-button:hover,
+.download-s3-button:hover {
+    background-color: #9526da;
+    transform: translateY(-2px);
 }
 
 .dashboard {
+    flex-grow: 1; /* Hace que el dashboard ocupe el espacio disponible */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
 }
 
+/* Contenedores para agrupar tarjetas en 2 o 3 columnas específicas */
+.dashboard-row-two-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(50% - 12.5px), 1fr)); /* Ajuste para gap de 25px */
+    gap: 25px;
+}
+
+.dashboard-row-three-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(33.33% - 16.66px), 1fr)); /* Ajuste para gap de 25px */
+    gap: 25px;
+}
+
+/* Estilos generales para las tarjetas */
 .card {
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
 }
 
 .card-header {
-    background-color: #f0f0f0;
-    padding: 15px;
+    background-color: #f4f6f8;
+    padding: 15px 20px;
     border-bottom: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
@@ -142,7 +221,7 @@ body {
 }
 
 .card.security .card-header {
-    background-color: #e9ecef; /* Un tono gris claro diferente */
+    background-color: #e9ecef;
     color: #495057;
 }
 
@@ -161,15 +240,59 @@ body {
     border: none;
     cursor: pointer;
     padding: 5px;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
+    width: auto;
+    height: auto;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+/* Si usas Font Awesome, puedes agregar un ícono al botón de exportar así: */
+.export-button::before {
+    font-family: 'Font Awesome 6 Free'; /* Asegúrate de tener Font Awesome correctamente cargado */
+    font-weight: 900; /* Para iconos 'solid' o 'duotone' */
+    content: '\f019'; /* Código Unicode para el icono de descarga (fa-download) */
+    margin-right: 5px;
+}
+
+.export-button:hover {
+    color: #3498db;
 }
 
 .card-body {
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Estilos para contadores como "Total de Productos en Stock" */
+.card.total-products,
+.card.total-users {
+    text-align: center;
+    justify-content: center; /* Centra el contenido verticalmente si es un contador simple */
+}
+
+.card.total-products .card-body,
+.card.total-users .card-body {
+    justify-content: center; /* Asegura que el contenido esté centrado en el body */
+}
+
+.card.total-products h2,
+.card.total-users h2 {
+    font-size: 3em;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 5px;
+}
+
+.card.total-products p,
+.card.total-users p {
+    font-size: 0.9em;
+    color: #7f8c8d;
 }
 
 .metric-value {
@@ -180,18 +303,28 @@ body {
 }
 
 .metric-change {
-    color: #27ae60; /* Verde para positivo */
+    color: #27ae60;
     font-size: 0.9em;
     margin-bottom: 10px;
 }
 
 .metric-change.negative {
-    color: #c0392b; /* Rojo para negativo */
+    color: #c0392b;
 }
 
 .chart {
     margin-bottom: 15px;
-    text-align: center; /* Centrar la imagen del gráfico simulado */
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px; /* Asegura una altura mínima para los gráficos */
+}
+
+.chart canvas {
+    max-width: 100%;
+    height: auto;
 }
 
 .chart img {
@@ -199,37 +332,36 @@ body {
     height: auto;
 }
 
-.table-summary table {
-    width: 100%;
-    border-collapse: collapse;
+/* Estilos para todas las tablas */
+.table-summary {
+    overflow-x: auto; /* Permite scroll horizontal en tablas grandes */
+    flex-grow: 1; /* Permite que la tabla ocupe el espacio disponible en la card-body */
 }
 
-.card.security .table-summary table {
-    table-layout: auto; /* Permite que las columnas se ajusten al contenido */
+.table-summary table {
+    width: 100%;
+    border-collapse: collapse; /* Elimina los espacios entre las celdas */
 }
 
 .table-summary th, .table-summary td {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
+    padding: 12px 15px; /* Más padding para celdas de tabla */
+    border-bottom: 1px solid #ddd; /* Borde inferior de cada fila */
+    text-align: left; /* Alineación del texto a la izquierda */
     white-space: nowrap; /* Evita el salto de línea del texto */
     overflow: hidden; /* Oculta el texto que se desborda */
     text-overflow: ellipsis; /* Muestra "..." para indicar texto oculto */
     font-size: 0.9em; /* Un tamaño de fuente un poco más pequeño */
 }
 
-.card.security .table-summary th,
-.card.security .table-summary td {
-    font-size: 0.9em;
-}
-
 .table-summary th {
     font-weight: bold;
-    color: #555;
+    color: #7f8c8d;
+    background-color: #f4f6f8;
+    text-transform: uppercase;
 }
 
 .card.security .table-summary th {
-    background-color: #f8f9fa; /* Un fondo ligeramente diferente para los encabezados */
+    background-color: #f8f9fa; /* Fondo ligeramente diferente para los encabezados de seguridad */
 }
 
 .table-summary th.right, .table-summary td.right {
@@ -237,61 +369,91 @@ body {
 }
 
 .table-summary tbody tr:last-child td {
-    border-bottom: none;
-    font-weight: bold;
+    border-bottom: none; /* Elimina el borde inferior de la última fila */
+    font-weight: bold; /* Negrita para el texto de la última fila (si es un total, etc.) */
 }
 
 .pagination {
-    margin-top: 10px;
-    color: #777;
+    margin-top: 20px;
+    color: #7f8c8d;
     font-size: 0.8em;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    flex-wrap: wrap; /* Permite que los elementos de paginación se envuelvan en pantallas pequeñas */
-    gap: 5px; /* Espacio entre los elementos de paginación */
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
 }
 
 .pagination span,
 .pagination select,
 .pagination input,
 .pagination button {
-    margin: 0 5px; /* Asegura un espacio uniforme */
+    margin: 0; /* Asegura que el gap maneje el espaciado */
 }
 
-
 .pagination button {
-    background: none;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    padding: 5px 8px;
-    /* margin-left: 5px; REMOVIDO: Ya cubierto por el gap o el margin general */
+    background: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    color: #333;
+}
+
+.pagination button:hover {
+    background-color: #e9ecef;
+}
+
+.pagination button:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    color: #aaa;
 }
 
 .audience-charts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
+    flex-grow: 1; /* Permite que este contenedor ocupe el espacio disponible */
+    align-items: center; /* Alinea los elementos verticalmente */
+    justify-items: center; /* Alinea los elementos horizontalmente dentro de sus celdas de grid */
 }
 
 .audience-charts > div {
     text-align: center;
+    position: relative;
+    height: 120px; /* Altura fija para los contenedores individuales del gráfico */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
+.audience-charts canvas,
 .audience-charts img {
     max-width: 100%;
+    max-height: 100%;
     height: auto;
-    margin-bottom: 5px;
 }
 
 .audience-charts .value {
     font-size: 0.9em;
     color: #777;
+    margin-top: 5px;
 }
 
 /* Anchos específicos para las columnas de la tabla de seguridad */
+.card.security .table-summary table {
+    table-layout: auto; /* Permite que las columnas se ajusten al contenido */
+}
+
 .card.security .table-summary th:nth-child(1), /* ID */
 .card.security .table-summary td:nth-child(1) {
     width: 5%;
@@ -309,5 +471,131 @@ body {
 
 .card.security .table-summary th:nth-child(4), /* Email */
 .card.security .table-summary td:nth-child(4) {
-    width: auto; /* Ocupa el espacio restante */
+    width: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+        padding: 15px 0; /* Ajuste el padding para conservar la alineación interna */
+    }
+    .sidebar .logo {
+        font-size: 1.6em;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .sidebar .menu a {
+        padding: 10px 15px; /* Ajuste el padding del menú */
+        width: calc(100% - 30px); /* Ajusta el ancho para compensar el padding */
+    }
+    .sidebar .community {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .content {
+        margin-left: 200px; /* Ajusta el margen para el sidebar más pequeño */
+        padding: 20px;
+    }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .header-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    .dashboard {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .dashboard-row-two-cols {
+        grid-template-columns: repeat(auto-fit, minmax(calc(50% - 7.5px), 1fr));
+        gap: 15px;
+    }
+    .dashboard-row-three-cols {
+        grid-template-columns: repeat(auto-fit, minmax(calc(33.33% - 10px), 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Apila el sidebar y el contenido */
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row; /* Elementos del sidebar en fila */
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        position: relative; /* CAMBIADO a relative para móviles para que fluya con el documento */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar .logo {
+        margin-bottom: 0;
+        text-align: left;
+        width: auto;
+        padding: 0; /* Quita el padding lateral aquí, ya está en el sidebar */
+    }
+    .sidebar nav {
+        display: none; /* Oculta la navegación principal en móviles */
+    }
+    .sidebar .community {
+        display: none; /* Oculta la sección de comunidad en móviles */
+    }
+    .content {
+        margin-left: 0; /* REMOVIDO el margen, ya que el sidebar no es fijo lateralmente */
+        padding: 15px;
+        margin-top: 10px; /* Un pequeño margen entre el sidebar (ahora arriba) y el contenido */
+    }
+    .header h1 {
+        font-size: 1.8em;
+    }
+    .connect-data-button,
+    .download-pdf-button,
+    .download-s3-button {
+        padding: 8px 15px;
+        font-size: 0.85em;
+    }
+    .date-range {
+        padding: 8px 12px;
+        font-size: 0.85em;
+    }
+    .dashboard {
+        gap: 15px;
+        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+    }
+    .dashboard-row-two-cols,
+    .dashboard-row-three-cols {
+        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+        gap: 15px;
+    }
+    .card {
+        padding: 15px; /* Un poco menos de padding en móviles */
+    }
+    .card-header {
+        padding: 10px 15px; /* Ajuste el padding del header de la tarjeta */
+    }
+    .card-body {
+        padding: 15px; /* Ajuste el padding del body de la tarjeta */
+    }
+    .table-summary th,
+    .table-summary td {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    .pagination {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .pagination select,
+    .pagination input[type="text"],
+    .pagination button {
+        width: 100%;
+        margin-top: 5px;
+    }
 }

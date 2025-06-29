@@ -1,0 +1,8 @@
+[
+    {"idDespacho": 101, "fecha": "2025-06-25", "producto": "Laptop Gamer", "cantidad": 1, "destinatario": "Felipe Díaz", "estado": "Entregado"},
+    {"idDespacho": 102, "fecha": "2025-06-26", "producto": "Monitor Curvo", "cantidad": 1, "destinatario": "Sofía Castro", "estado": "En tránsito"},
+    {"idDespacho": 103, "fecha": "2025-06-26", "producto": "Teclado Mecánico", "cantidad": 2, "destinatario": "Juan Pérez", "estado": "Pendiente"},
+    {"idDespacho": 104, "fecha": "2025-06-27", "producto": "Mouse Inalámbrico", "cantidad": 3, "destinatario": "Ana López", "estado": "Entregado"},
+    {"idDespacho": 105, "fecha": "2025-06-28", "producto": "Tarjeta de Video", "cantidad": 1, "destinatario": "Luis García", "estado": "En tránsito"},
+    {"idDespacho": 106, "fecha": "2025-06-28", "producto": "Auriculares Gaming", "cantidad": 1, "destinatario": "María Rojas", "estado": "Pendiente"}
+]

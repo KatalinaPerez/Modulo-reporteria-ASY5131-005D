@@ -2,68 +2,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panel de Reportería — Proveedores</title>
-  <link rel="stylesheet" href="{% static 'css/Proveedores.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel de Reportería — Proveedores</title>
+    <link rel="stylesheet" href="{% static 'css/Proveedores.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="logo">Reporteria❤️</div>
-    {% include 'navbar.html' %}
-  </aside>
-  <main class="content">
-    <header class="header">
-      <h1>Reporte de Proveedores</h1>
-      <div class="date-range">Fecha</div>
-      <button class="connect-data-button" onclick="window.location.href='/desc_pdf_products'" >Descarga PDF</button>
-      <button class="connect-data-button" onclick="window.location.href='/descargar/productos/'" >Descarga PDF de s3</button>
+    <aside class="sidebar">
+        <div class="logo">Reporteria❤️</div>
+        {% include 'navbar.html' %}
+    </aside>
+    <main class="content">
+        <header class="header">
+            <h1>Reporte de Proveedores</h1>
+            <div class="header-actions"> 
+                <div class="date-range" id="current-date"></div>
+                <button class="download-pdf-button" onclick="window.location.href='/desc_pdf_proveedores'">Descarga PDF</button> 
+                <button class="download-s3-button" onclick="window.location.href='/api/pdf/proveedores'">Descarga PDF de S3</button> 
+            </div>
+        </header>
 
-    </header>
+        <section class="dashboard">
+            <div class="card stock">
+                <div class="card-header">
+                    <h3>Proveedores</h3>
+                </div>
+                <div class="card-body table-summary">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre del Proveedor</th>
+                                <th>Contacto</th>
+                                <th>Teléfono</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proveedores-table"></tbody> {# <--- ESTE ID DEBE SER EXACTAMENTE "proveedores-table" #}
+                    </table>
 
-    <section class="dashboard">
-      <div class="card stock">
-        <div class="card-header">
-          <h3>Proveedores</h3>
-        </div>
-        <div class="card-body table-summary">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-              </tr>
-            </thead>
-            <tbody id="products-table"></tbody>
-          </table>
+                    <div class="pagination">
+                        <span>Filtrar por:</span>
+                        <select id="filter-column-prov"> {# <--- ESTE ID DEBE SER EXACTAMENTE "filter-column-prov" #}
+                            <option value="nombre">Nombre del Proveedor</option>
+                            <option value="contacto">Contacto</option>
+                            <option value="categoria">Categoría</option>
+                        </select>
+                        <input type="text" id="filter-value-prov" placeholder="Buscar..."> {# <--- ESTE ID DEBE SER EXACTAMENTE "filter-value-prov" #}
+                        <button id="apply-filter-prov">Filtrar</button> {# <--- ESTE ID DEBE SER EXACTAMENTE "apply-filter-prov" #}
 
-          <div class="pagination">
-            <span>Filtrar por:</span>
-            <select id="filter-column">
-              <option value="title">Título</option>
-              <option value="category">Categoría</option>
-            </select>
-            <input type="text" id="filter-value" placeholder="Buscar...">
-            <button id="apply-filter">Filtrar</button>
-
-            <span>Ordenar por:</span>
-            <select id="sort-column">
-              <option value="title">Título</option>
-              <option value="price">Precio</option>
-            </select>
-            <select id="sort-order">
-              <option value="asc">Ascendente</option>
-              <option value="desc">Descendente</option>
-            </select>
-            <button id="apply-sort">Ordenar</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <script src=""></script>
+                        <span>Ordenar por:</span>
+                        <select id="sort-column-prov"> {# <--- ESTE ID DEBE SER EXACTAMENTE "sort-column-prov" #}
+                            <option value="id">ID</option>
+                            <option value="nombre">Nombre del Proveedor</option>
+                            <option value="telefono">Teléfono</option>
+                        </select>
+                        <select id="sort-order-prov"> {# <--- ESTE ID DEBE SER EXACTAMENTE "sort-order-prov" #}
+                            <option value="asc">Ascendente</option>
+                            <option value="desc">Descendente</option>
+                        </select>
+                        <button id="apply-sort-prov">Ordenar</button> {# <--- ESTE ID DEBE SER EXACTAMENTE "apply-sort-prov" #}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    {# ¡Asegúrate de que este src coincide con el nombre de tu archivo JS! #}
+    <script src="{% static 'js/Provee.js' %}"></script> {# Si se llama Provee.js #}
+    <script src="{% static 'js/FechaActual.js' %}"></script>
 </body>
 </html>

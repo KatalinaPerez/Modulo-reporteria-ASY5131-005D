@@ -1,69 +1,148 @@
-const filterColumnSelect = document.getElementById('filter-column');
-const filterValueInput = document.getElementById('filter-value');
-const applyFilterButton = document.getElementById('apply-filter');
-const productsTableBody = document.getElementById('products-table');
-const applySortButton = document.getElementById('apply-sort');
-const sortColumnSelect = document.getElementById('sort-column');
-const sortOrderSelect = document.getElementById('sort-order');
+// === CONFIGURACIÓN PARA STOCK: Cambia esta variable para alternar la fuente de datos ===
+const USE_MOCK_DATA_STOCK = false; // true: para usar mock, false: para usar API externa
 
-let allProductsData = [];
+// URLs de las APIs para Stock
+const STOCK_MOCK_DATA_URL = '/static/js/stock_datos_mock.json'; // Tu JSON mock local
+const STOCK_EXTERNAL_API_URL = '/api/proxy/stock/';
 
-async function loadProductsData() {
+// === Selectores para la TABLA DE STOCK ===
+const stockTableBody = document.getElementById('stock-table');
+const filterColumnSelectStock = document.getElementById('filter-column-stock');
+const filterValueInputStock = document.getElementById('filter-value-stock');
+const applyFilterButtonStock = document.getElementById('apply-filter-stock');
+const sortColumnSelectStock = document.getElementById('sort-column-stock');
+const sortOrderSelectStock = document.getElementById('sort-order-stock');
+const applySortButtonStock = document.getElementById('apply-sort-stock');
+
+let allStockData = []; // Guarda todos los datos originales de stock
+
+// === FUNCIONES DE CARGA Y RENDERIZADO DE DATOS PARA STOCK ===
+async function fetchAndRenderStock() {
+    if (!stockTableBody) {
+        console.error('Error: Elemento #stock-table no encontrado en Stock.html.');
+        return;
+    }
+    stockTableBody.innerHTML = ''; // Limpiar tabla antes de añadir nuevos datos
+
+    let urlToFetch = '';
+    let errorMessage = '';
+
+    if (USE_MOCK_DATA_STOCK) {
+        urlToFetch = STOCK_MOCK_DATA_URL;
+        errorMessage = 'Error al obtener los datos de stock desde stock_datos_mock.json:';
+    } else {
+        urlToFetch = STOCK_EXTERNAL_API_URL;
+        errorMessage = `Error al obtener los datos de stock desde ${STOCK_EXTERNAL_API_URL}:`;
+    }
+
     try {
-        const response = await fetch('https://fakestoreapi.com/products');
+        const response = await fetch(urlToFetch);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        allProductsData = data;
-        renderProductsTable(data);
+
+        // **AQUÍ ESTÁ EL CAMBIO CLAVE: Mapeo de datos para la API de Azure**
+        allStockData = data.map(item => ({
+            id: item.id || 'N/A',
+            // Usamos 'name' de la API para 'title' en la tabla
+            title: item.name || 'N/A',
+            // La API tiene 'categoryId'. Si tienes un mapeo de categoryId a nombre de categoría,
+            // lo pondrías aquí. Por ahora, mostraremos el categoryId directamente.
+            category: item.categoryId || 'N/A', // Mapeamos categoryId a 'category'
+            price: item.price || 'N/A'
+        }));
+
+        renderStockTable(allStockData);
+
     } catch (error) {
-        console.error('Error al obtener los productos:', error);
+        console.error(errorMessage, error);
+        stockTableBody.innerHTML = `<tr><td colspan="4">${errorMessage.replace(':', '')}</td></tr>`; // 4 columnas
     }
 }
 
-function renderProductsTable(products) {
-    productsTableBody.innerHTML = '';
-    products.forEach(product => {
-        const row = productsTableBody.insertRow();
-        const idProduct = row.insertCell();
-        const titleProduct = row.insertCell();
-        const categoryProduct = row.insertCell();
-        const priceProduct = row.insertCell();
+function renderStockTable(stockEntries) {
+    if (!stockTableBody) return;
+    stockTableBody.innerHTML = ''; // Limpiar la tabla
 
-        idProduct.textContent = product.id;
-        titleProduct.textContent = product.title;
-        categoryProduct.textContent = product.category;
-        priceProduct.textContent = product.price;        
+    stockEntries.forEach(item => {
+        const row = stockTableBody.insertRow();
+        row.insertCell().textContent = item.id;
+        row.insertCell().textContent = item.title;
+        row.insertCell().textContent = item.category; // Ahora mostrará el categoryId
+        row.insertCell().textContent = item.price;
     });
 }
 
-function applyFilter() {
-    const column = filterColumnSelect.value;
-    const value = filterValueInput.value.toLowerCase();
-    const filtered = allProductsData.filter(product =>
-        String(product[column]).toLowerCase().includes(value)
-    );
-    renderProductsTable(filtered);
+// Las funciones applyStockFilter y applyStockSort también necesitan ser ajustadas
+// para usar 'title' en lugar de 'name' si es que las usabas así antes.
+// Ya las había ajustado en el código anterior, pero lo confirmo.
+
+function applyStockFilter() {
+    if (!filterColumnSelectStock || !filterValueInputStock) return;
+
+    const column = filterColumnSelectStock.value;
+    const value = filterValueInputStock.value.toLowerCase();
+
+    const filteredEntries = allStockData.filter(item => {
+        let cellValue = '';
+        if (column === 'title') { // Filtrar por 'title' que es el 'name' de la API
+            cellValue = String(item.title || '').toLowerCase();
+        } else if (column === 'category') { // Filtrar por 'category' que es el 'categoryId' de la API
+            cellValue = String(item.category || '').toLowerCase();
+        }
+        // Puedes añadir más condiciones de filtro si deseas filtrar por SKU, description, etc.
+        return cellValue.includes(value);
+    });
+    renderStockTable(filteredEntries);
 }
 
-function applySort() {
-    const column = sortColumnSelect.value;
-    const order = sortOrderSelect.value;
+function applyStockSort() {
+    if (!sortColumnSelectStock || !sortOrderSelectStock) return;
 
-    const sorted = [...allProductsData].sort((a, b) => {
-        let valA = a[column];
-        let valB = b[column];
+    const column = sortColumnSelectStock.value;
+    const order = sortOrderSelectStock.value;
 
-        if (typeof valA === 'string') valA = valA.toLowerCase();
-        if (typeof valB === 'string') valB = valB.toLowerCase();
+    const sortedEntries = [...allStockData].sort((a, b) => {
+        let valueA = a[column];
+        let valueB = b[column];
 
-        if (valA < valB) return order === 'asc' ? -1 : 1;
-        if (valA > valB) return order === 'asc' ? 1 : -1;
+        if (column === 'id' || column === 'price' || column === 'category') { // 'category' (categoryId) también es numérico
+            valueA = parseFloat(valueA);
+            valueB = parseFloat(valueB);
+            if (isNaN(valueA)) valueA = (order === 'asc' ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER);
+            if (isNaN(valueB)) valueB = (order === 'asc' ? Number.MIN_SAFE_INTEGER : Number.MAX_SAFE_INTEGER);
+
+            if (order === 'asc') {
+                return valueA - valueB;
+            } else {
+                return valueB - valueA;
+            }
+        } else { // Para valores de texto (title)
+            valueA = String(valueA || '').toLowerCase();
+            valueB = String(valueB || '').toLowerCase();
+
+            if (valueA < valueB) {
+                return order === 'asc' ? -1 : 1;
+            }
+            if (valueA > valueB) {
+                return order === 'asc' ? 1 : -1;
+            }
+        }
         return 0;
     });
-
-    renderProductsTable(sorted);
+    renderStockTable(sortedEntries);
 }
 
-// Eventos
-applyFilterButton.addEventListener('click', applyFilter);
-applySortButton.addEventListener('click', applySort);
-window.addEventListener('load', loadProductsData);
+// === EVENT LISTENERS y LÓGICA DE INICIO para STOCK ===
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAndRenderStock();
+
+    if (applyFilterButtonStock) {
+        applyFilterButtonStock.addEventListener('click', applyStockFilter);
+    }
+    if (applySortButtonStock) {
+        applySortButtonStock.addEventListener('click', applyStockSort);
+    }
+});

@@ -1,0 +1,6 @@
+[
+    {"id": 1, "nombre": "Proveedor A", "contacto": "Juan Perez", "telefono": "123-456-7890", "categoria": "Materiales"},
+    {"id": 2, "nombre": "Proveedor B", "contacto": "Maria Lopez", "telefono": "098-765-4321", "categoria": "Servicios"},
+    {"id": 3, "nombre": "Proveedor C", "contacto": "Carlos Ruiz", "telefono": "555-111-2222", "categoria": "Logística"},
+    {"id": 4, "nombre": "Distribuidora XYZ", "contacto": "Ana Gomez", "telefono": "987-654-3210", "categoria": "Componentes"}
+]

@@ -169,6 +169,7 @@ def api_get_audience_data(request):
     }
     return JsonResponse(data)
 
+
 # --- NUEVAS VISTAS DE API PARA LOS CONTADORES (STOCK Y USUARIOS DE SEGURIDAD) ---
 def api_get_stock_count(request):
     try:
@@ -188,6 +189,9 @@ def api_get_security_users_count(request):
         # En caso de error, devuelve un error JSON
         return JsonResponse({'error': str(e)}, status=500)
 # ---------------------------------------------------------------------------------
+
+
+
 #:::::: Genero api :::::::::::::
 
 '''class GenerarReporteAPIView(APIView):
@@ -453,3 +457,20 @@ Para validar las paginas en cada api, debo hacer una condición que valida el us
 para ello, llamo la info de seguridad, llamo el nombre y el correo del usuario logueado
 y lo paso a una condicion, todo esto dentro de un jingja
 '''
+
+def proxy_stock_api(request):
+    """
+    Vista que actúa como proxy para la API externa de Stock.
+    """
+    external_api_url = "https://integracionstock-etefhkhbcadegaej.brazilsouth-01.azurewebsites.net/products"
+    try:
+        response = requests.get(external_api_url)
+        response.raise_for_status()  # Lanza una excepción para errores HTTP (4xx o 5xx)
+        data = response.json()
+        return JsonResponse(data, safe=False) # safe=False permite serializar listas directamente
+    except requests.exceptions.RequestException as e:
+        # Manejar errores de red o HTTP de la API externa
+        return JsonResponse({'error': f'Error al conectar con la API externa: {e}'}, status=500)
+    except ValueError as e:
+        # Manejar errores si la respuesta no es un JSON válido
+        return JsonResponse({'error': f'Respuesta no JSON de la API externa: {e}'}, status=500)

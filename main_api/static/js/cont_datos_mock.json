@@ -3,12 +3,24 @@
         "idAsiento": "1",
         "fechaAsiento": "2024-06-11",
         "descripcionAsiento": "Compra de insumos",
-        "referenciasAsiento": "Factura 001"
+        "referenciasAsiento": "Factura 001",
+        "monto": 120000.50,
+        "tipo": "Egreso"
     },
     {
         "idAsiento": "2",
         "fechaAsiento": "2024-06-12",
         "descripcionAsiento": "Pago de servicios",
-        "referenciasAsiento": "Boleta 123"
+        "referenciasAsiento": "Boleta 123",
+        "monto": 85000.00,
+        "tipo": "Egreso"
+    },
+    {
+        "idAsiento": "3",
+        "fechaAsiento": "2024-06-15",
+        "descripcionAsiento": "Venta de productos",
+        "referenciasAsiento": "Factura 002",
+        "monto": 350000.75,
+        "tipo": "Ingreso"
     }
 ]

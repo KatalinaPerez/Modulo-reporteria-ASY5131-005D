@@ -16,7 +16,7 @@
   <main class="content">
     <header class="header">
       <h1>Reporte de Despacho</h1>
-      <div class="date-range">Fecha</div>
+      <div class="date-range" id="current-date"></div>
       <button class="connect-data-button" onclick="window.location.href='/desc_pdf_products'" >Descarga PDF</button>
       <button class="connect-data-button" onclick="window.location.href='/descargar/productos/'" >Descarga PDF de s3</button>
 
@@ -31,26 +31,28 @@
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Categoría</th>
-                <th>Precio</th>
+                <th>ID Despacho</th>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Destinatario</th>
+                <th>Estado</th>
               </tr>
             </thead>
-            <tbody id="products-table"></tbody>
+            <tbody id="despachos-table"></tbody>
           </table>
 
           <div class="pagination">
             <span>Filtrar por:</span>
-            <select id="filter-column">
+            <select id="filter-column-despacho">
               <option value="title">Título</option>
               <option value="category">Categoría</option>
             </select>
             <input type="text" id="filter-value" placeholder="Buscar...">
-            <button id="apply-filter">Filtrar</button>
+            <button id="apply-filter-despacho">Filtrar</button>
 
             <span>Ordenar por:</span>
-            <select id="sort-column">
+           <select id="sort-column-despacho">
               <option value="title">Título</option>
               <option value="price">Precio</option>
             </select>
@@ -58,12 +60,13 @@
               <option value="asc">Ascendente</option>
               <option value="desc">Descendente</option>
             </select>
-            <button id="apply-sort">Ordenar</button>
+            <button id="apply-sort-despacho">Ordenar</button>
           </div>
         </div>
       </div>
     </section>
   </main>
-  <script src=""></script>
+  <script src="{% static 'js/DespaApi.js' %}"></script>
+  <script src="{% static 'js/FechaActual.js' %}"></script>
 </body>
 </html>
