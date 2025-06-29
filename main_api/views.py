@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework import status
+from django.shortcuts import render 
 import requests
 from fpdf import FPDF
 from datetime import datetime
@@ -186,8 +188,82 @@ def api_get_security_users_count(request):
         # En caso de error, devuelve un error JSON
         return JsonResponse({'error': str(e)}, status=500)
 # ---------------------------------------------------------------------------------
+#:::::: Genero api :::::::::::::
 
+'''class GenerarReporteAPIView(APIView):
 
+    def get(self, tipo):
+        print("TIPO RECIBIDO:", tipo)
+        
+        # Lógica según tipo
+        if tipo == "usuarios":
+            datos = obtener_usuarios()
+            generar_pdf = generar_reporte_usu
+            carpeta_s3 = "reportes_usuarios"
+            nombre_base = "reporte_usuarios"
+
+        elif tipo == "productos":
+            datos = obtener_productos()
+            generar_pdf = generar_reporte_products
+            carpeta_s3 = "reportes_productos"
+            nombre_base = "reporte_productos"
+
+        elif tipo == "stock":
+            datos = obtener_stock()
+            generar_pdf = generar_reporte_stock
+            carpeta_s3 = "reportes_stock"
+            nombre_base = "reporte_stock"
+
+        elif tipo == "contabilidad":
+            datos = obtener_contabilidad()
+            generar_pdf = generar_reporte_cont
+            carpeta_s3 = "reportes_contabilidad"
+            nombre_base = "reporte_contabilidad"
+
+        elif tipo == "proveedores":
+            datos = obtener_proveedores()
+            generar_pdf = generar_reporte_prov_pedido
+            carpeta_s3 = "reportes_proveedores"
+            nombre_base = "reporte_proveedores"
+
+        elif tipo == "adquisiciones":
+            datos = obtener_adquisiciones()
+            generar_pdf = generar_reporte_adqui
+            carpeta_s3 = "reportes_adquisiciones"
+            nombre_base = "reporte_adquisiciones"
+
+        else:
+            return Response({"error": "❌ Tipo de reporte no válido"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not datos:
+            return Response({"error": f"Error al obtener datos de {tipo}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            pdf_bytes = generar_pdf(datos)
+        except Exception as e:
+            return Response({"error": f"Error generando el PDF de {tipo}: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        nombre_archivo = f"{nombre_base}_{fecha_actual}.pdf"
+        s3_key = f"{carpeta_s3}/{fecha_actual}/{nombre_archivo}"
+
+        upload_success = upload_s3(pdf_bytes, BUCKET_NAME, s3_key)
+        if not upload_success:
+            return Response({"error": "Error al subir el PDF a S3"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Descargar desde S3 en memoria
+        try:
+            s3 = get_s3()
+            response = s3.get_object(Bucket=BUCKET_NAME, Key=s3_key)
+            file_stream = response['Body'].read()
+
+            resp = HttpResponse(file_stream, content_type='application/pdf')
+            resp['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+            return resp
+
+        except Exception as e:
+            return Response({"error": f"Error al descargar el PDF desde S3: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+'''
 #:::::: Descargas de PDFs ::::::
 
 def desc_pdf_usu(request):

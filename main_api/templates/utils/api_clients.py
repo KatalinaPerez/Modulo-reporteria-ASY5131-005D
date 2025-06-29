@@ -13,6 +13,7 @@ BASE_URL_VENTAS = "http://34.238.247.153:8000/api/"
 BASE_URL_PROVEEDORES = "http://34.194.212.252/docs/"
 BASE_URL_SEGURIDAD = "http://35.168.133.16:3000/login"
 
+
 def obtener_usuarios():
     try:
         response = requests.get(BASE_URL_USUARIOS)
@@ -33,23 +34,12 @@ def obtener_productos():
         return [] 
 
 def obtener_stock():
-    '''try:
+    try:
         response = requests.get(BASE_URL_STOCK)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener stock: {e}")
-        return []'''
-    try:   
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
-        file_path = os.path.join(base_dir, '..', 'static', 'js', 'stock_datos_mock.json')
-        file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
-
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-        return data
-    except Exception as e:
-        print(f"Error al leer el archivo mock: {e}")
         return []
 
 def obtener_contabilidad():
