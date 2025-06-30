@@ -166,7 +166,7 @@ def generar_reporte_adqui(adquisiciones):
 
         precio = str(adq.get("precio_compra", ""))
         cantidad = str(adq.get("cantidad", ""))
-        producto = str(adq.get("producto", ""))
+        producto = str(adq.get("producto_id", ""))
 
         # Celdas de datos
         pdf.cell(10, 10, id_adq, 1)

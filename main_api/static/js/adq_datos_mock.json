@@ -1,23 +1,16 @@
 [
     {
-        "id":8,
-        "fecha":"2025-05-19T04:26:54.341397Z",
-        "precio_compra":"20000",
-        "cantidad":1,
-        "producto":3
+        "id": 10,
+        "producto_id": 152,
+        "fecha": "2025-06-29T03:24:26.926256Z",
+        "precio_compra": "2000.00",
+        "cantidad": 2
     },
     {
-        "id":7,
-        "fecha":"2025-05-14T12:49:04.669935Z",
-        "precio_compra":482000,
-        "cantidad":1,
-        "producto":6
-    },
-    {
-        "id":6,
-        "fecha":"2025-05-14T12:43:44.197911Z",
-        "precio_compra":5000,
-        "cantidad":1,
-        "producto":2
+        "id": 9,
+        "producto_id": 1,
+        "fecha": "2025-06-25T13:06:40.938685Z",
+        "precio_compra": "659700.00",
+        "cantidad": 3
     }
 ]

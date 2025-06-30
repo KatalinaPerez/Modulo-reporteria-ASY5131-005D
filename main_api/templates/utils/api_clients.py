@@ -63,14 +63,14 @@ def obtener_contabilidad():
         return []
     
 def obtener_adquisiciones():
-    '''try:
+    try:
         response = requests.get(BASE_URL_ADQUISICIONES)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error al obtener adquisiciones: {e}")
-        return []'''
-    try:   
+        return []
+    '''try:   
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Sube a main_api con dirname
         file_path = os.path.join(base_dir, '..', 'static', 'js', 'adq_datos_mock.json')
         file_path = os.path.normpath(file_path)  # normaliza la ruta para cualquier OS
@@ -80,7 +80,7 @@ def obtener_adquisiciones():
         return data
     except Exception as e:
         print(f"Error al leer el archivo mock: {e}")
-        return []
+        return []'''
     
 def obtener_ventas():
     try:
