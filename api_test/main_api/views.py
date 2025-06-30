@@ -5,6 +5,7 @@ from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 import os
 import platform
+import boto3
 from django.http import HttpResponse
 # Importa las funciones para obtener datos de tus APIs existentes
 from .templates.utils.api_clients import obtener_usuarios, obtener_productos, obtener_contabilidad, obtener_proveedores, obtener_adquisiciones, obtener_stock, obtener_ventas
@@ -17,6 +18,7 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required, permission_required 
 
 # :::: Vistas de Renderizado de Páginas ::::::
+
 def index(request):
     return render(request, 'index.html')
 
@@ -256,16 +258,17 @@ def editar_pdf(request):
 
         for usuario in usuarios:
             nombre = request.POST.get(f'nombre_{usuario["id"]}', usuario['name'])
-            usuario = request.POST.get(f'usuario_{usuario["id"]}', usuario['username'])
+            username = request.POST.get(f'usuario_{usuario["id"]}', usuario['username'])
             email = request.POST.get(f'email_{usuario["id"]}', usuario['email'])
             calle = request.POST.get(f'calle_{usuario["id"]}', usuario['address']['street'])
             ciudad = request.POST.get(f'ciudad_{usuario["id"]}', usuario['address']['city'])
 
             pdf.cell(60, 10, nombre, 1)
-            pdf.cell(60, 10, usuario, 1)
+            pdf.cell(60, 10, username, 1)
             pdf.cell(80, 10, email, 1)
             pdf.cell(80, 10, calle, 1)
             pdf.cell(50, 10, ciudad, 1, ln=1)
+
 
         # Generar bytes del PDF
         pdf_bytes = pdf.output(dest='S').encode('latin1')
