@@ -3,7 +3,7 @@
 // === CONFIGURACIÓN: Cambia esta variable para alternar la fuente de datos ===
 // true: Usará adq_datos_mock.json (tu archivo local)
 // false: Usará JSONPlaceholder (API externa de prueba)
-const USE_MOCK_DATA = false; // <--- CÁMBIAME para alternar!
+const USE_MOCK_DATA = true; // <--- CÁMBIAME para alternar!
 
 // URL de la API externa (JSONPlaceholder para posts, que usaremos como ejemplo de adquisiciones)
 const JSONPLACEHOLDER_API_URL = 'https://jsonplaceholder.typicode.com/posts?_limit=20'; 

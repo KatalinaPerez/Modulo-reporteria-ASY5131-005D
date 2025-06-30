@@ -1,5 +1,3 @@
-// main_api/static/js/mainPageCharts.js
-
 document.addEventListener('DOMContentLoaded', function() {
 
     // Función genérica para cargar datos de una API y actualizar el HTML y dibujar gráficos
